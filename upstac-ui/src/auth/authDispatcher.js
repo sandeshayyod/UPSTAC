@@ -16,19 +16,16 @@ export const doLogin = (loginRequest) => {
 
 
 }
-export const doUploadDocument = (id,file) => {
+export const doUploadDocument = (id, file) => {
 
 
-
-    const url = documentUploadUrl +id;
+    const url = documentUploadUrl + id;
     let formData = new FormData();
 
     formData.append("file", file);
 
 
-
-
-    return http.uploadFileToServer(url,formData)
+    return http.uploadFileToServer(url, formData)
 
 
 }
@@ -98,9 +95,6 @@ const getMyDetailsWithToken = (token) => {
 }
 
 
-
-
-
 export const setAuthToken = (token) => {
     http.setToken(token)
 }
@@ -109,7 +103,7 @@ export const clearAuthToken = () => {
     http.setToken(null)
 }
 
-export const doLogout = (dispatch,history) => {
+export const doLogout = (dispatch, history) => {
 
 
     dispatch({type: LOGOUT});

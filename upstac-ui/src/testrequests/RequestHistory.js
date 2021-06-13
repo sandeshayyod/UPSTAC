@@ -1,13 +1,8 @@
-import {Container, Grid, makeStyles, React, useEffect, useState,} from "../component"
+import {Container, Grid, React, useEffect, useState,} from "../component"
 import MUIDataTable from "mui-datatables";
 import {appNotification} from "../shared/notification/app-notification";
-
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
-import TestFlow from "../testrequests/TestFlow";
 import {useGlobalStyles} from "../styles/GlobalStyles";
 import {getRequestHistoryOptions} from "../authority/shared/view-all-request-options";
-
 
 
 function RequestHistory(props) {
@@ -18,9 +13,8 @@ function RequestHistory(props) {
     const [requests, setRequests] = useState([]);
 
 
-
     let columns = [
-       {
+        {
             name: "Test Request ID",
             options: {
                 filter: true,
@@ -49,10 +43,10 @@ function RequestHistory(props) {
 
     ];
 
-    const {actionColumns} =props
+    const {actionColumns} = props
 
-    if(actionColumns && actionColumns.length > 0)
-        columns= columns.concat(actionColumns);
+    if (actionColumns && actionColumns.length > 0)
+        columns = columns.concat(actionColumns);
 
     const options = getRequestHistoryOptions(requests)
     // const oldOptions = {
@@ -90,27 +84,23 @@ function RequestHistory(props) {
     // };
 
 
-
-
-
-
     function reloadTests() {
 
-        const {getMyHistory,onDataLoaded} = props
+        const {getMyHistory, onDataLoaded} = props
         getMyHistory()
             .subscribe((allTestRequests) => {
 
 
                 setRequests(allTestRequests)
-                const buffer = allTestRequests.map(item=>{
+                const buffer = allTestRequests.map(item => {
 
-                    return [item.requestId,item.name,item.age,item.status]
+                    return [item.requestId, item.name, item.age, item.status]
                 })
 
                 const results = []
                 results.push(buffer)
                 setData(buffer)
-                if(onDataLoaded)
+                if (onDataLoaded)
                     onDataLoaded(allTestRequests)
 
             }, (error => {
@@ -127,9 +117,6 @@ function RequestHistory(props) {
         reloadTests();
 
 
-
-
-
     }, [])
 
 
@@ -139,13 +126,13 @@ function RequestHistory(props) {
                 <h1>
                     Request History
                 </h1>
-                <hr />
+                <hr/>
             </Container>
             <Container component="main" maxWidth="md">
                 <Grid container>
                     <Grid item md={12}>
 
-                        <MUIDataTable title={"Request History"} data={data} columns={columns} options={options} />
+                        <MUIDataTable title={"Request History"} data={data} columns={columns} options={options}/>
 
                     </Grid>
                 </Grid>

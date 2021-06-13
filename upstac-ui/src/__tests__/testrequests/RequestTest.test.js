@@ -1,10 +1,6 @@
 import {initMockAxios, resetMockAxios} from "../../../__testshared/shared/frameworks/mock-http";
 import {mockNotificationAndConfirmationModules} from "../../../__testshared/shared/frameworks/mock-notification";
-import {
-    setupMocksForCreateTestRequest,
-    setupMocksForDoGetTestRequestByID
-} from "../../../__testshared/shared/api/mock-testrequests";
-import {setupMocksForDoCompleteConsultation} from "../../../__testshared/shared/api/mock-consultation";
+import {setupMocksForCreateTestRequest} from "../../../__testshared/shared/api/mock-testrequests";
 import {getStoreForLoggedInUser} from "../../../__testshared/shared/store/mock-store-service";
 import {mountComponentWithStoreAndHistory} from "../../../__testshared/shared/component-helper";
 import React from "react";
@@ -29,20 +25,16 @@ describe('Request Test  tests', () => {
     it('Selecting for myself should autofill data', async () => {
 
         setupMocksForCreateTestRequest("sample")
-        const httpPostSpy=  jest.spyOn(http, 'post')
+        const httpPostSpy = jest.spyOn(http, 'post')
 
 
-        const mountedComponent= mountComponentWithStoreAndHistory( <RequestTest/>, getStoreForLoggedInUser())
-
-
+        const mountedComponent = mountComponentWithStoreAndHistory(<RequestTest/>, getStoreForLoggedInUser())
 
 
         await mountedComponent.waitForDomLoad();
 
 
-
-        const container= mountedComponent.getContainer()
-
+        const container = mountedComponent.getContainer()
 
 
         mountedComponent.setValue('[id="select-test-for-me"]', "true")
@@ -55,18 +47,12 @@ describe('Request Test  tests', () => {
 
         mountedComponent.verifyOnComplete(() => {
 
-        const args = httpPostSpy.mock.calls[0]
+            const args = httpPostSpy.mock.calls[0]
             console.log(args)
             expect(httpPostSpy).toBeCalled()
 
 
-
-
         })
-
-
-
-
 
 
     });
@@ -75,20 +61,16 @@ describe('Request Test  tests', () => {
     it('Selecting for others should allow filling data', async () => {
 
         setupMocksForCreateTestRequest("sample")
-        const httpPostSpy=  jest.spyOn(http, 'post')
+        const httpPostSpy = jest.spyOn(http, 'post')
 
 
-        const mountedComponent= mountComponentWithStoreAndHistory( <RequestTest/>, getStoreForLoggedInUser())
-
-
+        const mountedComponent = mountComponentWithStoreAndHistory(<RequestTest/>, getStoreForLoggedInUser())
 
 
         await mountedComponent.waitForDomLoad();
 
 
-
-        const container= mountedComponent.getContainer()
-
+        const container = mountedComponent.getContainer()
 
 
         mountedComponent.setValue('[id="select-gender"]', "MALE")
@@ -107,22 +89,15 @@ describe('Request Test  tests', () => {
 
         mountedComponent.verifyOnComplete(() => {
 
-        const args = httpPostSpy.mock.calls[0]
+            const args = httpPostSpy.mock.calls[0]
             console.log(args)
             expect(httpPostSpy).toBeCalled()
-
-
 
 
         })
 
 
-
-
-
-
     });
-
 
 
 });

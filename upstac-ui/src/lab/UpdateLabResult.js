@@ -30,15 +30,15 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        backgroundColor:'white',
+        backgroundColor: 'white',
     },
-    mt40:{
-        marginTop:40,
+    mt40: {
+        marginTop: 40,
     },
-    w100:{
+    w100: {
         width: '100%',
     },
-    select100Form:{
+    select100Form: {
         width: '100%',
     },
     formControl: {
@@ -49,8 +49,8 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(2),
     },
 
-    formContainer:{
-      padding:"50 50 50 50"
+    formContainer: {
+        padding: "50 50 50 50"
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -69,7 +69,7 @@ function UpdateLabResult() {
     let location = useLocation();
     let {params} = useRouteMatch("/update-lab-report/:id");
     const dispatch = useDispatch()
-    const {id} =params
+    const {id} = params
     const [testRequest, setTestRequest] = useState(null);
 
     const [bloodPressure, setBloodPressure] = useState('102');
@@ -78,21 +78,15 @@ function UpdateLabResult() {
     const [oxygenLevel, setOxygenLevel] = useState('95');
     const [temperature, setTemperature] = useState('98');
     const [result, setResult] = useState('NEGATIVE');
-   // const [bloodPressure, setBloodPressure] = useState('');
-   //  const [comments, setComments] = useState('');
-   //  const [heartBeat, setHeartBeat] = useState('');
-   //  const [oxygenLevel, setOxygenLevel] = useState('');
-   //  const [temperature, setTemperature] = useState('');
-   //  const [result, setResult] = useState('');
-
-
-
-
+    // const [bloodPressure, setBloodPressure] = useState('');
+    //  const [comments, setComments] = useState('');
+    //  const [heartBeat, setHeartBeat] = useState('');
+    //  const [oxygenLevel, setOxygenLevel] = useState('');
+    //  const [temperature, setTemperature] = useState('');
+    //  const [result, setResult] = useState('');
 
 
     function handleSubmit(event) {
-
-
 
 
         event.preventDefault();
@@ -104,7 +98,7 @@ function UpdateLabResult() {
             result,
             temperature
         }
-        doUpdateLabResult(id,payload)
+        doUpdateLabResult(id, payload)
             .subscribe((response) => {
                 appNotification.showSuccess("Succesfully Updated Lab Result")
                 history.push("/lab-history")
@@ -112,8 +106,6 @@ function UpdateLabResult() {
             }, errorHandler)
 
     }
-
-
 
 
     useEffect(() => {
@@ -127,12 +119,7 @@ function UpdateLabResult() {
             }, errorHandler)
 
 
-
-
-
     }, [])
-
-
 
 
     return (
@@ -140,25 +127,23 @@ function UpdateLabResult() {
             <Container component="main" className={classes.mt40}>
 
 
-                 <Grid container spacing={2}  className={classes.paperWhite} >
+                <Grid container spacing={2} className={classes.paperWhite}>
 
                     <Typography component="h1" variant="h5">
-                       Update Lab Result
-                        <hr />
+                        Update Lab Result
+                        <hr/>
                     </Typography>
-                    <Grid container spacing={2}  className={classes.formContainer} >
+                    <Grid container spacing={2} className={classes.formContainer}>
 
-                        <Grid item xs={6} >
+                        <Grid item xs={6}>
                             <TestRequestDetail testRequest={testRequest}></TestRequestDetail>
 
                         </Grid>
-                        <Grid item xs={6} >
+                        <Grid item xs={6}>
                             <form className={classes.form} onSubmit={handleSubmit} noValidate>
 
                                 <Grid container spacing={2}>
-                                    <Grid item xs={12} >
-
-
+                                    <Grid item xs={12}>
 
 
                                         <TextField
@@ -175,11 +160,10 @@ function UpdateLabResult() {
                                         />
 
 
-
                                     </Grid>
 
 
-                                    <Grid item xs={12} >
+                                    <Grid item xs={12}>
                                         <TextField
                                             variant="outlined"
                                             value={heartBeat}
@@ -193,7 +177,7 @@ function UpdateLabResult() {
                                         />
                                     </Grid>
 
-                                    <Grid item xs={12} >
+                                    <Grid item xs={12}>
                                         <TextField
                                             variant="outlined"
                                             value={oxygenLevel}
@@ -207,7 +191,7 @@ function UpdateLabResult() {
                                         />
                                     </Grid>
 
-                                    <Grid item xs={12} >
+                                    <Grid item xs={12}>
                                         <TextField
                                             variant="outlined"
                                             value={temperature}
@@ -222,8 +206,7 @@ function UpdateLabResult() {
                                     </Grid>
 
 
-
-                                    <Grid item xs={12} >
+                                    <Grid item xs={12}>
 
 
                                         <FormControl variant="outlined" className={classes.select100Form}>
@@ -245,10 +228,7 @@ function UpdateLabResult() {
                                         </FormControl>
 
 
-
-
                                     </Grid>
-
 
 
                                     <Grid item xs={12}>
@@ -263,10 +243,9 @@ function UpdateLabResult() {
 
                                             id="comments"
                                             onInput={e => setComments(e.target.value)}
-                                            placeholder="Comments" />
+                                            placeholder="Comments"/>
 
                                     </Grid>
-
 
 
                                 </Grid>
@@ -286,7 +265,7 @@ function UpdateLabResult() {
                     </Grid>
 
 
-                 </Grid>
+                </Grid>
 
             </Container>
         </React.Fragment>

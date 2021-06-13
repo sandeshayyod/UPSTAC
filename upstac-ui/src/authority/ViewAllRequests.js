@@ -16,7 +16,6 @@ function ViewAllRequests() {
     const [requests, setRequests] = useState([]);
 
 
-
     let columns = [
         {
             name: "Test Request ID",
@@ -58,10 +57,6 @@ function ViewAllRequests() {
     const options = getRequestHistoryOptions(requests)
 
 
-
-
-
-
     function reloadTests() {
 
 
@@ -69,10 +64,10 @@ function ViewAllRequests() {
             .subscribe((allTestRequests) => {
 
                 setRequests(allTestRequests)
-                const buffer = allTestRequests.map(item=>{
+                const buffer = allTestRequests.map(item => {
 
-                    const status= item.pinCodeInfo.zoneType
-                    return [item.requestId,item.name,item.age,item.pinCode,status]
+                    const status = item.pinCodeInfo.zoneType
+                    return [item.requestId, item.name, item.age, item.pinCode, status]
                 })
 
                 const results = []
@@ -80,8 +75,7 @@ function ViewAllRequests() {
                 setData(buffer)
 
 
-
-                    setRequests(allTestRequests)
+                setRequests(allTestRequests)
 
             }, errorHandler)
     }
@@ -93,9 +87,6 @@ function ViewAllRequests() {
         reloadTests();
 
 
-
-
-
     }, [])
 
 
@@ -105,13 +96,13 @@ function ViewAllRequests() {
                 <h1>
                     Request History
                 </h1>
-                <hr />
+                <hr/>
             </Container>
             <Container component="main" maxWidth="md">
                 <Grid container>
                     <Grid item md={12}>
 
-                        <MUIDataTable title={"Request History"} data={data} columns={columns} options={options} />
+                        <MUIDataTable title={"Request History"} data={data} columns={columns} options={options}/>
 
                     </Grid>
                 </Grid>
@@ -119,7 +110,6 @@ function ViewAllRequests() {
         </React.Fragment>
 
     )
-
 
 
 }

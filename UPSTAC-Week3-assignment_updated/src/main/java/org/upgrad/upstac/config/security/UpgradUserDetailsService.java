@@ -32,7 +32,7 @@ public class UpgradUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userService.findByUserName(username);
-        log.info("loadUserByUsername " + user.toString());
+        //log.info("loadUserByUsername " + user.toString());
         if (user == null) {
             throw new UsernameNotFoundException("Invalid username or password.");
         }

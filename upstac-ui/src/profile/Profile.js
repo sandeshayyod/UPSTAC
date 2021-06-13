@@ -45,19 +45,19 @@ function Profile() {
         <React.Fragment>
             <Container maxWidth="md" component="main" className={classes.heroContent}>
                 <h1>
-                    Hi {user.userRole === "doctor" ? "Dr." : null} {user.firstName}, your  Profile Details
-            </h1>
-                <hr />
+                    Hi {user.userRole === "doctor" ? "Dr." : null} {user.firstName}, your Profile Details
+                </h1>
+                <hr/>
             </Container>
             <Container maxWidth="md">
                 <Grid justify="center"
-                    container>
+                      container>
                     <Grid md={8} item>
                         <TableContainer component={Paper}>
                             <Table className={classes.table} aria-label="simple table">
 
                                 <TableBody>
-                                    {profileData.map((row,index) => (
+                                    {profileData.map((row, index) => (
                                         <TableRow key={index}>
 
                                             <TableCell align="left">

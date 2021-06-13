@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.upgrad.upstac.users.models.AccountStatus;
 import org.upgrad.upstac.users.models.Gender;
+import org.upgrad.upstac.users.models.AccountStatus;
 import org.upgrad.upstac.users.roles.Role;
 
 import javax.persistence.*;

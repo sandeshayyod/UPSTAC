@@ -28,23 +28,30 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
     @Autowired
     UserLoggedInService userLoggedInService;
+
 
     @Autowired
     ChangePasswordService changePasswordService;
 
+
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
+
 
     @PreAuthorize("hasRole('GOVERNMENT_AUTHORITY')")
     @GetMapping
     public List<User> listUsers() {
+
         return userService.findAll();
     }
+
 
     @PreAuthorize("hasAnyRole('USER','GOVERNMENT_AUTHORITY','TESTER','DOCTOR')")
     @GetMapping(value = "/details")
     public User getMyDetails() {
+
         return userLoggedInService.getLoggedInUser();
     }
 
@@ -52,6 +59,8 @@ public class UserController {
     @PreAuthorize("hasAnyRole('USER','GOVERNMENT_AUTHORITY','TESTER','DOCTOR')")
     @PutMapping(value = "/changepassword")
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
+
+
         try {
             log.info("No errors to change based on" + changePasswordRequest.getPassword());
 
@@ -64,13 +73,18 @@ public class UserController {
         } catch (ForbiddenException e) {
             throw asForbidden(e.getMessage());
         }
+
+
     }
 
     @PreAuthorize("hasAnyRole('USER','GOVERNMENT_AUTHORITY','TESTER','DOCTOR')")
     @DeleteMapping(value = "/closeaccount")
     public ResponseEntity<?> closeAccount() {
+
         User user = userLoggedInService.getLoggedInUser();
         deleteUserByName(user.getUserName());
+
+
         return ResponseEntity.ok("Succesfully Closed Account");
     }
 
@@ -78,7 +92,11 @@ public class UserController {
     @PreAuthorize("hasAnyRole('GOVERNMENT_AUTHORITY')")
     @DeleteMapping(value = "/deleteuser/{username}")
     public ResponseEntity<?> deleteUser(@PathVariable String username) {
+
+
         deleteUserByName(username);
+
+
         return ResponseEntity.ok("Succesfully removed User");
     }
 
@@ -86,6 +104,7 @@ public class UserController {
         User user = userService.findByUserName(username);
         userService.updateStatusAndSave(user, AccountStatus.DELETED);
     }
+
 
     @PreAuthorize("hasAnyRole('USER','GOVERNMENT_AUTHORITY','TESTER','DOCTOR')")
     @PutMapping
@@ -96,6 +115,9 @@ public class UserController {
         } catch (ConstraintViolationException e) {
             throw asConstraintViolation(e);
         }
+
+
     }
+
 
 }

@@ -22,7 +22,6 @@ const BorderLinearProgress = withStyles((theme) => ({
 class LoadingIndicatorComponent extends Component {
 
 
-
     constructor(props) {
         super(props);
         this.state = {
@@ -32,7 +31,7 @@ class LoadingIndicatorComponent extends Component {
 
     componentDidMount() {
 
-        this.subscription =  loadingIndicator.onChange().subscribe(value => {
+        this.subscription = loadingIndicator.onChange().subscribe(value => {
 
             this.setState({
                 "showLoading": value
@@ -48,13 +47,13 @@ class LoadingIndicatorComponent extends Component {
 
         const {showLoading} = this.state
 
-                return <Fragment>
+        return <Fragment>
 
-                    { showLoading &&  <div className="progress-container">
+            {showLoading && <div className="progress-container">
 
-                        <BorderLinearProgress />
-                        </div>}
-                </Fragment>
+                <BorderLinearProgress/>
+            </div>}
+        </Fragment>
 
     }
 }

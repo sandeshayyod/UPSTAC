@@ -29,7 +29,7 @@ describe('Register User tests', () => {
 
         const mountedComponent = mountComponentWithStoreAndHistory(<Register/>, getStoreForAnonymousUser())
 
-        const name ="myuser"
+        const name = "myuser"
         setupMocksForRegisterUser(name)
 
 
@@ -42,9 +42,6 @@ describe('Register User tests', () => {
         mountedComponent.setFormControlChecked('[id="agreecondition"]')
 
 
-
-
-
         await mountedComponent.submitForm("form")
 
         await mountedComponent.reload();
@@ -52,17 +49,17 @@ describe('Register User tests', () => {
 
     });
     it('Registering User without agreeing terms should throw error', async () => {
-        const showErrorSpy=  jest.spyOn(appNotification, 'showError')
+        const showErrorSpy = jest.spyOn(appNotification, 'showError')
 
         const mountedComponent = mountComponentWithStoreAndHistory(<Register/>, getStoreForAnonymousUser())
-        const name ="myuser"
+        const name = "myuser"
         mountedComponent.setValue('[name="userRole"]', 'USER')
         mountedComponent.setInputValue('[name="firstName"]', name)
         await mountedComponent.submitForm("form")
         await mountedComponent.reload();
 
 
-        mountedComponent.verifyOnComplete(()=>{
+        mountedComponent.verifyOnComplete(() => {
             expect(showErrorSpy).toHaveBeenCalledWith("Please agree the terms and conditions")
 
         })
@@ -70,11 +67,11 @@ describe('Register User tests', () => {
     });
 
     it('Registering User with incorrect confirm password should throw error', async () => {
-        const showErrorSpy=  jest.spyOn(appNotification, 'showError')
+        const showErrorSpy = jest.spyOn(appNotification, 'showError')
 
         const mountedComponent = mountComponentWithStoreAndHistory(<Register/>, getStoreForAnonymousUser())
 
-        const name ="myuser"
+        const name = "myuser"
         setupMocksForRegisterUser(name)
 
 
@@ -91,7 +88,7 @@ describe('Register User tests', () => {
         await mountedComponent.reload();
 
 
-        mountedComponent.verifyOnComplete(()=>{
+        mountedComponent.verifyOnComplete(() => {
             expect(showErrorSpy).toHaveBeenCalledWith("Passwords Mismatch")
 
         })
@@ -99,11 +96,11 @@ describe('Register User tests', () => {
     });
 
     it('Registering User when server down should throw error', async () => {
-        const showErrorSpy=  jest.spyOn(appNotification, 'showError')
+        const showErrorSpy = jest.spyOn(appNotification, 'showError')
 
         const mountedComponent = mountComponentWithStoreAndHistory(<Register/>, getStoreForAnonymousUser())
 
-        const name ="myuser"
+        const name = "myuser"
         setupMocksForRegisterUserAPIDown(name)
         mountedComponent.setFormControlChecked('[id="agreecondition"]')
         await mountedComponent.submitForm("form")
@@ -111,7 +108,7 @@ describe('Register User tests', () => {
         await mountedComponent.reload();
 
 
-        mountedComponent.verifyOnComplete(()=>{
+        mountedComponent.verifyOnComplete(() => {
 
             expect(showErrorSpy).toBeCalledWith("Server Error")
 
@@ -128,11 +125,7 @@ describe('Register User tests', () => {
 describe('Register Doctor/Tester tests', () => {
 
 
-    beforeAll(()=>{
-
-
-
-
+    beforeAll(() => {
 
 
     })
@@ -152,12 +145,12 @@ describe('Register Doctor/Tester tests', () => {
 
         const mountedComponent = mountComponentWithStoreAndHistory(<Register/>, getStoreForAnonymousUser())
 
-        const name ="mydoctor"
+        const name = "mydoctor"
         setupMocksForRegisterDoctor(name)
 
         const container = mountedComponent.getContainer();
 
-          mountedComponent.setFormControlChecked('[label="Doctor"]')
+        mountedComponent.setFormControlChecked('[label="Doctor"]')
 
 
         container.update()
@@ -171,7 +164,7 @@ describe('Register Doctor/Tester tests', () => {
         await mountedComponent.submitForm("form")
 
         await mountedComponent.reload();
-        mountedComponent.expectLocationContains("/upload-document/DOCTOR" )
+        mountedComponent.expectLocationContains("/upload-document/DOCTOR")
 
     });
     it('Registering Tester with valid data should go to upload page', async () => {
@@ -179,7 +172,7 @@ describe('Register Doctor/Tester tests', () => {
 
         const mountedComponent = mountComponentWithStoreAndHistory(<Register/>, getStoreForAnonymousUser())
 
-        const name ="mytester"
+        const name = "mytester"
         setupMocksForRegisterTester(name)
 
         const container = mountedComponent.getContainer();
@@ -192,7 +185,7 @@ describe('Register Doctor/Tester tests', () => {
         mountedComponent.setInputValue('[name="firstName"]', name)
         mountedComponent.setInputValue('[name="lastName"]', "somelast")
         mountedComponent.setInputValue('[name="userName"]', name)
-        mountedComponent.setInputValue('[name="email"]', name+"@upgrad.com")
+        mountedComponent.setInputValue('[name="email"]', name + "@upgrad.com")
         mountedComponent.setInputValue('[name="mobile"]', "89437846723")
         mountedComponent.setInputValue('[name="address"]', "some where n world")
         mountedComponent.setInputValue('[name="pinCode"]', "487125")
@@ -206,7 +199,7 @@ describe('Register Doctor/Tester tests', () => {
         await mountedComponent.submitForm("form")
 
         await mountedComponent.reload();
-        mountedComponent.expectLocationContains("/upload-document/TESTER" )
+        mountedComponent.expectLocationContains("/upload-document/TESTER")
 
     });
 

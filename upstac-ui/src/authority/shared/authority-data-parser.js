@@ -1,11 +1,11 @@
-export function getAllDataWithPinCodes(inputs,  thresholds) {
+export function getAllDataWithPinCodes(inputs, thresholds) {
 
-    const pincodes = groupTestRequestsByPincode(inputs,thresholds)
+    const pincodes = groupTestRequestsByPincode(inputs, thresholds)
 
     const results = []
-    Object.keys(pincodes).forEach(key=>{
+    Object.keys(pincodes).forEach(key => {
         const value = pincodes[key]
-        results.push({...value,pinCode:key})
+        results.push({...value, pinCode: key})
 
     })
 
@@ -46,7 +46,7 @@ export function mergeZoneStatusWithPincode(thresholds, pincodes) {
 
 function createPincodeData(testRequest) {
 
-    const {positive,negative,homeQuarantine,admitted,tested} = parseFromTestRequest(testRequest)
+    const {positive, negative, homeQuarantine, admitted, tested} = parseFromTestRequest(testRequest)
 
 
     return {
@@ -59,7 +59,7 @@ function createPincodeData(testRequest) {
     };
 }
 
-function parseFromTestRequest(item){
+function parseFromTestRequest(item) {
     const {pinCode, labResult, consultation} = item
     const {suggestion} = consultation
     const {result} = labResult
@@ -69,17 +69,17 @@ function parseFromTestRequest(item){
     const admitted = (suggestion == 'ADMIT') ? 1 : 0;
     const tested = 1;
 
-    return {pinCode, labResult, consultation,positive,negative,homeQuarantine,admitted,tested}
+    return {pinCode, labResult, consultation, positive, negative, homeQuarantine, admitted, tested}
 }
 
 
-function addTestRequestToPincode(existingPincodeData,testRequest) {
+function addTestRequestToPincode(existingPincodeData, testRequest) {
 
 
-    const {positive,negative,homeQuarantine,admitted,tested} = parseFromTestRequest(testRequest)
-    const {positiveCount, homeQuarantineCount, admittedCount,negativeCount, testedCount} = existingPincodeData;
+    const {positive, negative, homeQuarantine, admitted, tested} = parseFromTestRequest(testRequest)
+    const {positiveCount, homeQuarantineCount, admittedCount, negativeCount, testedCount} = existingPincodeData;
 
-    return     {
+    return {
         positiveCount: positiveCount + positive,
         negativeCount: negativeCount + negative,
         homeQuarantineCount: homeQuarantineCount + homeQuarantine,
@@ -90,28 +90,29 @@ function addTestRequestToPincode(existingPincodeData,testRequest) {
 }
 
 export function groupTestRequestsByPincode(inputs, thresholds) {
-    const pincodes ={}
+    const pincodes = {}
     const items = inputs.filter(item => item.status === 'COMPLETED')
 
     items.forEach(function (item) {
         const {pinCode} = item
         if (pincodes.hasOwnProperty(pinCode))
-            pincodes[pinCode] = addTestRequestToPincode( pincodes[pinCode],item)
-         else
+            pincodes[pinCode] = addTestRequestToPincode(pincodes[pinCode], item)
+        else
             pincodes[pinCode] = createPincodeData(item)
 
 
     });
 
-    return  mergeZoneStatusWithPincode(thresholds, pincodes);;
+    return mergeZoneStatusWithPincode(thresholds, pincodes);
+    ;
 }
 
-export  function mergeTestRequestsAndThresholdDetails(testRequests, thresholds) {
-    const pincodes =groupTestRequestsByPincode(testRequests,  thresholds);
+export function mergeTestRequestsAndThresholdDetails(testRequests, thresholds) {
+    const pincodes = groupTestRequestsByPincode(testRequests, thresholds);
 
-    return testRequests.map(item =>{
+    return testRequests.map(item => {
 
-        const {pinCode} =item;
+        const {pinCode} = item;
         item.pinCodeInfo = pincodes[pinCode]
         return item;
     });

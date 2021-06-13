@@ -13,7 +13,7 @@ import {
 import {useEffect} from "react";
 
 
-const pieOptions =  {
+const pieOptions = {
     tooltips: {
         mode: 'index',
         intersect: false
@@ -27,7 +27,7 @@ const pieOptions =  {
 
 };
 
-const pincodeDistributionOptions =  {
+const pincodeDistributionOptions = {
     tooltips: {
         mode: 'index',
         intersect: false
@@ -35,7 +35,7 @@ const pincodeDistributionOptions =  {
     responsive: true,
     plugins: {
         datalabels: {
-            display:false,
+            display: false,
             color: '#ffffff'
         }
     },
@@ -63,11 +63,10 @@ function AuthorityDashboard() {
     const classes = useGlobalStyles();
 
 
-     const [allPositiveNegativeChart, setAllPositiveNegativeChart] = useState({});
+    const [allPositiveNegativeChart, setAllPositiveNegativeChart] = useState({});
     const [allHomeQuarantineAdmitChart, setAllHomeQuarantineAdmitChart] = useState({});
     const [pincodePositiveNegativeDistributionChart, setPincodePositiveNegativeDistributionChart] = useState({});
     const [pincodeHomeQuarantineAdmissionDistributionChart, setPincodeHomeQuarantineAdmissionDistributionChart] = useState({});
-
 
 
     useEffect(() => {
@@ -88,12 +87,7 @@ function AuthorityDashboard() {
             }))
 
 
-
-
-
     }, [])
-
-
 
 
     return (
@@ -101,39 +95,40 @@ function AuthorityDashboard() {
             <Container component="main" className={classes.mt40}>
 
 
-                <Grid container spacing={2}  className={classes.paperWhite} >
+                <Grid container spacing={2} className={classes.paperWhite}>
 
                     <Typography component="h1" variant="h5">
                         Dashboard
-                        <hr />
+                        <hr/>
                     </Typography>
-                    <Grid container spacing={2}  className={classes.formContainer} >
+                    <Grid container spacing={2} className={classes.formContainer}>
 
-                        <Grid item xs={6} >
+                        <Grid item xs={6}>
                             <div>
                                 <h2>Test Positive/Negative Distribution</h2>
-                                <Doughnut data={allPositiveNegativeChart} options={pieOptions} />
+                                <Doughnut data={allPositiveNegativeChart} options={pieOptions}/>
                             </div>
 
                         </Grid>
-                        <Grid item xs={6} >
+                        <Grid item xs={6}>
 
-                            <h2>Test Home Quarantine/Admission  Distribution</h2>
-                            <Doughnut data={allHomeQuarantineAdmitChart} options={pieOptions} />
+                            <h2>Test Home Quarantine/Admission Distribution</h2>
+                            <Doughnut data={allHomeQuarantineAdmitChart} options={pieOptions}/>
 
                         </Grid>
                     </Grid>
-                    <Grid container spacing={2}  className={classes.formContainer} >
+                    <Grid container spacing={2} className={classes.formContainer}>
 
-                        <Grid item xs={6} >
-                            <h2>Test Positive/Negative - Pincode based   Distribution</h2>
-                            <Bar data={pincodePositiveNegativeDistributionChart} options={pincodeDistributionOptions} />
+                        <Grid item xs={6}>
+                            <h2>Test Positive/Negative - Pincode based Distribution</h2>
+                            <Bar data={pincodePositiveNegativeDistributionChart} options={pincodeDistributionOptions}/>
 
                         </Grid>
-                        <Grid item xs={6} >
+                        <Grid item xs={6}>
 
-                            <h2> Home Quarantine/Admission - Pincode based   Distribution</h2>
-                            <Bar data={pincodeHomeQuarantineAdmissionDistributionChart} options={pincodeDistributionOptions} />
+                            <h2> Home Quarantine/Admission - Pincode based Distribution</h2>
+                            <Bar data={pincodeHomeQuarantineAdmissionDistributionChart}
+                                 options={pincodeDistributionOptions}/>
 
 
                         </Grid>

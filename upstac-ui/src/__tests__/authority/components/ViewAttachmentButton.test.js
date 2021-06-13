@@ -1,23 +1,11 @@
 import React from 'react';
-
-
-import {PendingApprovalActions} from "../../../authority/components/PendingApprovalActions";
 import IconButton from "@material-ui/core/IconButton";
 import {initMockAxios, resetMockAxios} from "../../../../__testshared/shared/frameworks/mock-http";
 import {mountComponentWithStoreAndHistory} from "../../../../__testshared/shared/component-helper";
 import {getStoreForGovernmentAuthorityWithPendingUsersAndThresholds} from "../../../../__testshared/shared/store/mock-store-service";
-import {
-    setupErrorMocksForPendingApprovals,
-    setupErrorMocksForUpdateApproval,
-    setupMocksForDownloadDocument,
-    setupMocksForRejectApproval,
-    setupMocksForUpdateApproval
-} from "../../../../__testshared/shared/api/mock-authority";
+import {setupMocksForDownloadDocument} from "../../../../__testshared/shared/api/mock-authority";
 import {mockNotificationAndConfirmationModules} from "../../../../__testshared/shared/frameworks/mock-notification";
-import * as appNotificationModule from "../../../shared/notification/app-notification";
-import * as confirmMessageModule from "../../../shared/confirm/confirm-message-service";
 import http from "../../../shared/services/http-service";
-import {appNotification} from "../../../shared/notification/app-notification";
 import {ViewAttachmentButton} from "../../../authority/components/ViewAttachmentButton";
 
 function getSelectedUserOn(store, dataIndex) {
@@ -41,7 +29,7 @@ describe('View Attachment Button tests', () => {
     it('should download file , if view attachment button gets clicked', async () => {
 
 
-        const downloadFileFromServerSpy=  jest.spyOn(http, 'downloadFileFromServer')
+        const downloadFileFromServerSpy = jest.spyOn(http, 'downloadFileFromServer')
 
 
         const dataIndex = 1;
@@ -62,9 +50,7 @@ describe('View Attachment Button tests', () => {
             expect(downloadFileFromServerSpy).toBeCalled()
 
 
-
         })
-
 
 
     });

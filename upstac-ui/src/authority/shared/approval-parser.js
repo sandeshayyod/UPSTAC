@@ -8,6 +8,6 @@ export function parseApprovalItem(response) {
     return {...result, contentType, fileName, documentId: id, documentUrl};
 }
 
-export  function parseApprovalItems(items) {
-    return items.map(response =>parseApprovalItem(response));
+export function parseApprovalItems(items) {
+    return items.map(response => parseApprovalItem(response));
 }

@@ -2,12 +2,8 @@ import React from 'react';
 import {initMockAxios, resetMockAxios} from "../../../__testshared/shared/frameworks/mock-http";
 import {
     setupErrorMocksForPendingApprovals,
-    setupMocksForAllRequests,
-    setupMocksForAllThreshold,
-    setupMocksForAllThresholdError, setupMocksForPendingApprovals
+    setupMocksForPendingApprovals
 } from "../../../__testshared/shared/api/mock-authority";
-import AuthorityDashboard from "../../authority/AuthorityDashboard";
-import {Bar, Doughnut} from "react-chartjs-2";
 import {mountComponentWithStoreAndHistory} from "../../../__testshared/shared/component-helper";
 import {
     getStoreForGovernmentAuthority,
@@ -18,6 +14,7 @@ import PendingApprovals from "../../authority/PendingApprovals";
 import MUIDataTable from "mui-datatables";
 import {UPDATE_PENDING_USERDATA} from "../../authority/store/authorityStore";
 import {appNotification} from "../../shared/notification/app-notification";
+
 describe('Pending Approval  tests', () => {
 
     beforeEach(() => {
@@ -43,29 +40,22 @@ describe('Pending Approval  tests', () => {
         await mountedComponent.waitForDomLoad();
 
 
-        const container= mountedComponent.getContainer()
+        const container = mountedComponent.getContainer()
         const store = mountedComponent.getStore();
-        mountedComponent.verifyOnComplete(()=>{
+        mountedComponent.verifyOnComplete(() => {
 
             expect(container.find(MUIDataTable)).not.toBeNull()
             expect(store.getActions()).not.toBeNull()
-            const allStoreActionTypes = store.getActions().map(action=> action["type"])
+            const allStoreActionTypes = store.getActions().map(action => action["type"])
             expect(allStoreActionTypes).toContain(UPDATE_PENDING_USERDATA)
-
-
 
 
         })
 
 
-
-
-
-
     });
 
     it('should show data if there is pendingUsers data ', async () => {
-
 
 
         const mountedComponent = mountComponentWithStoreAndHistory(<PendingApprovals/>,
@@ -75,27 +65,23 @@ describe('Pending Approval  tests', () => {
         await mountedComponent.waitForDomLoad();
 
 
-        const container= mountedComponent.getContainer()
+        const container = mountedComponent.getContainer()
 
-        mountedComponent.verifyOnComplete(()=>{
+        mountedComponent.verifyOnComplete(() => {
 
             const node = container.find(MUIDataTable);
-            const records =node.prop("data")
+            const records = node.prop("data")
             expect(records.length).toBeGreaterThan(1)
 
 
         })
 
 
-
-
-
-
     });
 
     it('should show error message if there is no data and api throws error', async () => {
 
-        const showErrorSpy=  jest.spyOn(appNotification, 'showError')
+        const showErrorSpy = jest.spyOn(appNotification, 'showError')
 
         setupErrorMocksForPendingApprovals();
         const mountedComponent = mountComponentWithStoreAndHistory(<PendingApprovals/>,
@@ -105,11 +91,9 @@ describe('Pending Approval  tests', () => {
         await mountedComponent.waitForDomLoad();
 
 
-        mountedComponent.verifyOnComplete(()=>{
+        mountedComponent.verifyOnComplete(() => {
             expect(showErrorSpy).toHaveBeenCalled();
         })
-
-
 
 
     });

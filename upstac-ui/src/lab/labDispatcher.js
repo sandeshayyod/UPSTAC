@@ -21,21 +21,19 @@ export const doGetPendingTestRequests = () => {
 
 export const doAssignLabResult = (testRequestId) => {
 
-    let request ={}
+    let request = {}
 
 
-
-    const url = doAssignLabResultBaseUrl +testRequestId ;
+    const url = doAssignLabResultBaseUrl + testRequestId;
 
     return http.put(url, request);
 
 
 }
-export const doUpdateLabResult = (testRequestId,labResult) => {
+export const doUpdateLabResult = (testRequestId, labResult) => {
 
 
-
-    const url = doUpdateLabResultBaseUrl +testRequestId ;
+    const url = doUpdateLabResultBaseUrl + testRequestId;
 
     return http.put(url, labResult);
 

@@ -1,15 +1,4 @@
-import {
-    Button,
-    Checkbox,
-    Container,
-    CssBaseline,
-    FormControlLabel,
-    Grid,
-    Link,
-    makeStyles,
-    TextField,
-    Typography
-} from "../component"
+import {Button, Container, CssBaseline, Grid, Link, makeStyles, TextField, Typography} from "../component"
 import {useHistory} from "react-router-dom";
 
 import React, {useState} from 'react';
@@ -17,7 +6,7 @@ import {useDispatch} from 'react-redux';
 
 
 import {environment} from "../environment";
-import {clearAuthToken, doLogin} from "./authDispatcher";
+import {doLogin} from "./authDispatcher";
 import {LOGIN} from "./authStore";
 import {appNotification} from "../shared/notification/app-notification";
 
@@ -53,39 +42,33 @@ function Login(props) {
     const [password, set_password] = useState("")
 
 
-
-
-
-
-
     async function login(event) {
         event.preventDefault();
-        console.log("userName",userName)
+        console.log("userName", userName)
         const payload = {
             userName,
             password
         }
 
 
-        const loginUrl = environment.baseUrl +"/auth/login"
+        const loginUrl = environment.baseUrl + "/auth/login"
 
 
-        doLogin( payload)
-            .subscribe( (response) =>{
+        doLogin(payload)
+            .subscribe((response) => {
 
                 const currentUser = response.user
                 const token = response.token
 
 
-                dispatch({type: LOGIN,"payload":response});
+                dispatch({type: LOGIN, "payload": response});
 
 
+                history.push("/profile")
 
-                    history.push("/profile")
 
-
-            },(error => {
-                appNotification.showError(error )
+            }, (error => {
+                appNotification.showError(error)
 
 
             }))
@@ -93,12 +76,12 @@ function Login(props) {
 
     return (
         <Container component="main" maxWidth="xs">
-            <CssBaseline />
+            <CssBaseline/>
             <div className={classes.paper}>
 
                 <Typography component="h1" variant="h5">
                     Login in
-          </Typography>
+                </Typography>
                 <form className={classes.form} onSubmit={login} noValidate>
                     <TextField
                         variant="outlined"
@@ -135,7 +118,7 @@ function Login(props) {
                         className={classes.submit}
                     >
                         Sign In
-            </Button>
+                    </Button>
                     <Grid container>
                         <Grid item xs>
                             {/* <Link href="#" variant="body2">

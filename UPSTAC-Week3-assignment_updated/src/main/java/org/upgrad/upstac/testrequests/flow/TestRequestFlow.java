@@ -2,7 +2,7 @@ package org.upgrad.upstac.testrequests.flow;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.upgrad.upstac.testrequests.RequestStatus;
+import org.upgrad.upstac.testrequests.models.RequestStatus;
 import org.upgrad.upstac.testrequests.TestRequest;
 import org.upgrad.upstac.users.User;
 
@@ -13,9 +13,11 @@ import java.time.LocalDate;
 @Entity
 public class TestRequestFlow {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
 
     @ManyToOne
     @JsonIgnore
@@ -28,5 +30,6 @@ public class TestRequestFlow {
     private User changedBy;
 
     private LocalDate happenedOn = LocalDate.now();
+
 
 }

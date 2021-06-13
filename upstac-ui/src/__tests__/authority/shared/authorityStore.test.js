@@ -13,7 +13,7 @@ describe('Authority Reducer Tests', () => {
         return reducer(undefined, inputAction)
     }
 
-    beforeEach(()=>{
+    beforeEach(() => {
 
 
     })
@@ -22,9 +22,7 @@ describe('Authority Reducer Tests', () => {
     });
 
 
-
     it('should update ThresholdLevel Data when UPDATE_THRESHOLD called with valid payload', () => {
-
 
 
         const payload = allThresholdsResponse
@@ -39,7 +37,6 @@ describe('Authority Reducer Tests', () => {
 
 
     it('should update pendingUsers Data when updatePendingData called with valid payload', () => {
-
 
 
         const payload = pendingApprovalResponse

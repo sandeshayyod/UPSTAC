@@ -1,5 +1,4 @@
-import {CssBaseline, makeStyles, React, Route, Router, Switch, UINavBar,} from "./component"
-
+import {makeStyles, React, Route, Switch, UINavBar,} from "./component"
 
 
 import './App.css';
@@ -31,106 +30,105 @@ import {Redirect} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
 
-  '@global': {
-    body: {
-      backgroundColor: '#e6e6e6'
+    '@global': {
+        body: {
+            backgroundColor: '#e6e6e6'
+        },
+        footer: {
+            marginTop: 'calc(5% + 60px)',
+            bottom: 0
+        }
     },
-    footer:{
-      marginTop:'calc(5% + 60px)',
-      bottom: 0
+    footer: {
+        marginTop: 'calc(5% + 60px)',
+        bottom: 0
     }
-  },
-  footer:{
-    marginTop:'calc(5% + 60px)',
-    bottom: 0
-  }
 
 
 }));
 
 
 function App() {
-  const classes = useStyles();
-  const {user,token,isLoggedIn,roles} = useSelector(state => state.auth);
+    const classes = useStyles();
+    const {user, token, isLoggedIn, roles} = useSelector(state => state.auth);
 
-  const auth = {user,token,isLoggedIn,roles}
+    const auth = {user, token, isLoggedIn, roles}
 
-  let  {isUser,isDoctor,isAuthority,isTester,isApproved} = roles
-
-
-
-  let homePage = '/login'
-
-  if(isLoggedIn)
-    homePage ='/profile'
-
-  useEffect(() => {
+    let {isUser, isDoctor, isAuthority, isTester, isApproved} = roles
 
 
-    if(token && user){
-      setAuthToken(token)
+    let homePage = '/login'
 
-    }
+    if (isLoggedIn)
+        homePage = '/profile'
 
-  }, [token]);
-
-  return (<React.Fragment>
-
-        <LoadingIndicatorComponent></LoadingIndicatorComponent>
-        <UINavBar />
-        <ConfirmMessageComponent/>
-        <Switch>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/register">
-            <Register />
-          </Route>
-          <Route path="/upload-document/:role/:id">
-            <UploadDocument />
-          </Route>
-          <GuardedRoute path='/profile' component={Profile} auth={isLoggedIn} />
-          <GuardedRoute path='/request-test' component={RequestTest} auth={isUser} />
-
-          <GuardedRoute path='/user-history' component={UserHistory} auth={isUser} />
-
-          {/*<GuardedRoute path='/test-detail/:id' component={TestDetail} auth={isLoggedIn} />*/}
-          <GuardedRoute path='/lab-history' component={LabHistory} auth={isTester} />
-
-          <GuardedRoute path='/pending-lab-tests' component={PendingLabTests} auth={isTester} />
-          <GuardedRoute path='/update-lab-report/:id' component={UpdateLabResult} auth={isTester} />
+    useEffect(() => {
 
 
-          <GuardedRoute path='/consultation-history' component={ConsultationHistory} auth={isDoctor} />
-          <GuardedRoute path='/pending-consultations' component={PendingConsultations} auth={isDoctor} />
-          <GuardedRoute path='/update-consultation/:id' component={UpdateConsultation} auth={isDoctor} />
+        if (token && user) {
+            setAuthToken(token)
 
-          <GuardedRoute path='/update-thresholds' component={UpdateThreshold} auth={isAuthority} />
-          <GuardedRoute path='/pending-user-approvals' component={PendingApprovals} auth={isAuthority} />
-          <GuardedRoute path='/view-all-requests' component={ViewAllRequests} auth={isAuthority} />
-          <GuardedRoute path='/dashboard' component={AuthorityDashboard} auth={isAuthority} />
+        }
+
+    }, [token]);
+
+    return (<React.Fragment>
+
+            <LoadingIndicatorComponent></LoadingIndicatorComponent>
+            <UINavBar/>
+            <ConfirmMessageComponent/>
+            <Switch>
+                <Route path="/login">
+                    <Login/>
+                </Route>
+                <Route path="/register">
+                    <Register/>
+                </Route>
+                <Route path="/upload-document/:role/:id">
+                    <UploadDocument/>
+                </Route>
+                <GuardedRoute path='/profile' component={Profile} auth={isLoggedIn}/>
+                <GuardedRoute path='/request-test' component={RequestTest} auth={isUser}/>
+
+                <GuardedRoute path='/user-history' component={UserHistory} auth={isUser}/>
+
+                {/*<GuardedRoute path='/test-detail/:id' component={TestDetail} auth={isLoggedIn} />*/}
+                <GuardedRoute path='/lab-history' component={LabHistory} auth={isTester}/>
+
+                <GuardedRoute path='/pending-lab-tests' component={PendingLabTests} auth={isTester}/>
+                <GuardedRoute path='/update-lab-report/:id' component={UpdateLabResult} auth={isTester}/>
 
 
-          {/*<Route path="/tests-requested">*/}
-          {/*  <TestsRequested />*/}
-          {/*</Route>*/}
-          {/*<Route path="/test-result">*/}
-          {/*  <TestResult />*/}
-          {/*</Route>*/}
-          {/*<Route path="/take-sample">*/}
-          {/*  <TakeSample />*/}
-          {/*</Route>*/}
+                <GuardedRoute path='/consultation-history' component={ConsultationHistory} auth={isDoctor}/>
+                <GuardedRoute path='/pending-consultations' component={PendingConsultations} auth={isDoctor}/>
+                <GuardedRoute path='/update-consultation/:id' component={UpdateConsultation} auth={isDoctor}/>
 
-          <Route path="/">
-            <Redirect to={homePage} />
-          </Route>
-        </Switch>
-        <AppNotificationComponent/>
+                <GuardedRoute path='/update-thresholds' component={UpdateThreshold} auth={isAuthority}/>
+                <GuardedRoute path='/pending-user-approvals' component={PendingApprovals} auth={isAuthority}/>
+                <GuardedRoute path='/view-all-requests' component={ViewAllRequests} auth={isAuthority}/>
+                <GuardedRoute path='/dashboard' component={AuthorityDashboard} auth={isAuthority}/>
 
 
-    </React.Fragment>
+                {/*<Route path="/tests-requested">*/}
+                {/*  <TestsRequested />*/}
+                {/*</Route>*/}
+                {/*<Route path="/test-result">*/}
+                {/*  <TestResult />*/}
+                {/*</Route>*/}
+                {/*<Route path="/take-sample">*/}
+                {/*  <TakeSample />*/}
+                {/*</Route>*/}
 
-  );
+                <Route path="/">
+                    <Redirect to={homePage}/>
+                </Route>
+            </Switch>
+            <AppNotificationComponent/>
+
+
+        </React.Fragment>
+
+    );
 }
 
 export default App;

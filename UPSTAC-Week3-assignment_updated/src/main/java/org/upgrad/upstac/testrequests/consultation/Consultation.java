@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
 import org.upgrad.upstac.testrequests.TestRequest;
+import org.upgrad.upstac.testrequests.consultation.models.DoctorSuggestion;
 import org.upgrad.upstac.users.User;
 
 import javax.persistence.*;

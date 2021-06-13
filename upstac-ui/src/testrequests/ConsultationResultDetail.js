@@ -1,10 +1,6 @@
-import Paper from "@material-ui/core/Paper";
-import {makeStyles, React, useHistory, useState} from "../component";
-import {useLocation} from "react-router-dom";
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import {makeStyles, React} from "../component";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
 import {Fragment} from "react";
 import CardHeader from "@material-ui/core/CardHeader";
 import Avatar from "@material-ui/core/Avatar";
@@ -14,17 +10,6 @@ import MailIcon from '@material-ui/icons/Mail';
 import PhoneIcon from '@material-ui/icons/Phone';
 import CardActions from "@material-ui/core/CardActions";
 import {blue} from '@material-ui/core/colors';
-
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import Switch from '@material-ui/core/Switch';
-import WifiIcon from '@material-ui/icons/Wifi';
-import BluetoothIcon from '@material-ui/icons/Bluetooth';
-import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import {getNameAndInitials} from "../shared/common-helpers";
 
@@ -71,14 +56,11 @@ function ConsultationResultDetail({consultation}) {
     if (!consultation)
         return <Fragment></Fragment>
 
-    const { comments, suggestion, doctor, updatedOn} = consultation
+    const {comments, suggestion, doctor, updatedOn} = consultation
     const {firstName, lastName, email, phoneNumber} = doctor
 
 
-
-
-
-    const {initials,name} = getNameAndInitials(firstName, lastName)
+    const {initials, name} = getNameAndInitials(firstName, lastName)
 
     return (<Card className={classes.root}>
             <CardHeader

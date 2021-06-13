@@ -1,15 +1,16 @@
-import {environment} from "../../../src/environment";
-import {mockAny, mockGet, mockServerError} from "../frameworks/mock-http";
+import {mockAny, mockServerError} from "../frameworks/mock-http";
 import {
     doGetAllTestRequestsUrl,
     doGetPendingApprovalsUrl,
-    doGetThresholdsUrl, doUpdateAllThresholdsUrl, downloadDocumentBaseUrl, updateApprovalUrl
+    doGetThresholdsUrl,
+    doUpdateAllThresholdsUrl,
+    downloadDocumentBaseUrl,
+    updateApprovalUrl
 } from "../../../src/authority/shared/authorityDispatcher";
 import {getAllTestRequests} from "../data/testrequests";
 import {allThresholdsResponse} from "../data/threshold-responses";
 import {pendingApprovalResponse} from "../data/authority-responses";
 import {createMockedUserWithRoleAndStatus} from "../data/auth-responses";
-import http from "../../../src/shared/services/http-service";
 
 //
 //
@@ -37,12 +38,11 @@ export const setupMocksForDownloadDocument = (id) => {
 
     const url = downloadDocumentBaseUrl + id;
 
-    const response ={
-        headers:{},
-        data:"Some Data",
+    const response = {
+        headers: {},
+        data: "Some Data",
     }
-    mockAny(url,response)
-
+    mockAny(url, response)
 
 
 }
@@ -64,15 +64,16 @@ export function setupMocksForPendingApprovals() {
     mockAny(doGetPendingApprovalsUrl, pendingApprovalResponse)
 }
 
-export function setupMocksForUpdateApproval(name,role) {
+export function setupMocksForUpdateApproval(name, role) {
 
 
-    mockAny(updateApprovalUrl, createMockedUserWithRoleAndStatus(name,role,"APPROVED"))
+    mockAny(updateApprovalUrl, createMockedUserWithRoleAndStatus(name, role, "APPROVED"))
 }
-export function setupMocksForRejectApproval(name,role) {
+
+export function setupMocksForRejectApproval(name, role) {
 
 
-    mockAny(updateApprovalUrl, createMockedUserWithRoleAndStatus(name,role,"REJECTED"))
+    mockAny(updateApprovalUrl, createMockedUserWithRoleAndStatus(name, role, "REJECTED"))
 }
 
 export function setupErrorMocksForUpdateApproval() {

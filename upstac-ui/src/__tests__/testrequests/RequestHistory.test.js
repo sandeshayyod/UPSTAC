@@ -1,5 +1,5 @@
 import {initMockAxios, resetMockAxios} from "../../../__testshared/shared/frameworks/mock-http";
-import {setupMocksForAllRequests, setupMocksForAllThreshold} from "../../../__testshared/shared/api/mock-authority";
+import {setupMocksForAllRequests} from "../../../__testshared/shared/api/mock-authority";
 import {mountComponentWithStoreAndHistory} from "../../../__testshared/shared/component-helper";
 import React from "react";
 import RequestHistory from "../../testrequests/RequestHistory";
@@ -29,21 +29,18 @@ describe('Request History tests', () => {
         setupMocksForGetMyConsultationHistory();
         setupMocksForAllRequests();
 
-        const loadResults = (results)=>{
+        const loadResults = (results) => {
             expect(results).not.toBeNull();
             done()
         }
 
         const mountedComponent = mountComponentWithStoreAndHistory(<RequestHistory
                 getMyHistory={doGetMyConsultationHistory}
-                onDataLoaded ={loadResults}/>,
+                onDataLoaded={loadResults}/>,
             getStoreForLoggedInDoctor())
 
 
         await mountedComponent.waitForDomLoad();
-
-
-
 
 
     });
@@ -52,21 +49,18 @@ describe('Request History tests', () => {
         setupMocksForGetMyConsultationHistory();
         setupMocksForAllRequests();
 
-        const loadResults = (results)=>{
+        const loadResults = (results) => {
             expect(results).not.toBeNull();
             done()
         }
 
         const mountedComponent = mountComponentWithStoreAndHistory(<RequestHistory
                 getMyHistory={doGetMyConsultationHistory}
-                onDataLoaded ={loadResults}/>,
+                onDataLoaded={loadResults}/>,
             getStoreForLoggedInDoctor())
 
 
         await mountedComponent.waitForDomLoad();
-
-
-
 
 
     });
@@ -77,19 +71,18 @@ describe('Request History tests', () => {
         setupMocksForAllRequests();
 
 
-
         const mountedComponent = mountComponentWithStoreAndHistory(<RequestHistory
                 getMyHistory={doGetMyConsultationHistory}
-               />,
+            />,
             getStoreForLoggedInDoctor())
 
 
         await mountedComponent.waitForDomLoad();
 
-        const container= mountedComponent.getContainer()
-        mountedComponent.verifyOnComplete(()=>{
+        const container = mountedComponent.getContainer()
+        mountedComponent.verifyOnComplete(() => {
 
-            const record =container.find(MUIDataTable).props("data")
+            const record = container.find(MUIDataTable).props("data")
             expect(record).not.toBeNull()
             expect(record.data).not.toBeNull()
             expect(record.data.length).toBeGreaterThan(1)
@@ -97,12 +90,10 @@ describe('Request History tests', () => {
         })
 
 
-
-
     });
 
     it('RequestHistory should call throw error , when server is down', async () => {
-        const showErrorSpy=  jest.spyOn(appNotification, 'showError')
+        const showErrorSpy = jest.spyOn(appNotification, 'showError')
 
         setupMockErrorForGetMyConsultationHistory();
 
@@ -112,10 +103,9 @@ describe('Request History tests', () => {
             getStoreForLoggedInDoctor())
 
 
-
         await mountedComponent.reload();
 
-        mountedComponent.verifyOnComplete(()=>{
+        mountedComponent.verifyOnComplete(() => {
             expect(showErrorSpy).toHaveBeenCalled()
 
         })

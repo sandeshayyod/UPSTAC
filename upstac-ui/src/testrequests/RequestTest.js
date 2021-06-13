@@ -25,10 +25,10 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         alignItems: 'center',
     },
-    select100:{
+    select100: {
         width: '100%',
     },
-    select100Form:{
+    select100Form: {
         width: '100%',
     },
     formControl: {
@@ -52,7 +52,7 @@ function RequestTest() {
 
     const classes = useStyles();
     const history = useHistory();
-    const [forMe,setForMe] = useState(false);
+    const [forMe, setForMe] = useState(false);
 
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
@@ -60,7 +60,7 @@ function RequestTest() {
     const [email, setEmail] = useState('');
     const [gender, setGender] = useState('');
     const [shrink, setShrink] = useState(false);
-    const [phoneNumber,setPhoneNumber] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
     const [pinCode, setPinCode] = useState('');
     // const [name, setName] = useState('user');
     // const [address, setAddress] = useState('some address ,some day');
@@ -73,15 +73,15 @@ function RequestTest() {
 
     const {user} = useSelector(state => state.auth);
 
-    function toggleTestForMe(){
+    function toggleTestForMe() {
         const toggledState = !forMe
         setForMe(toggledState)
-        if(toggledState){
+        if (toggledState) {
 
 
             console.log(user)
-            setName(user.firstName )
-           setAddress(user.address)
+            setName(user.firstName)
+            setAddress(user.address)
             setAge(user.age)
             setEmail(user.email)
             setGender(user.gender)
@@ -114,7 +114,7 @@ function RequestTest() {
         doCreateTestRequest(payload)
             .subscribe((response) => {
 
-                console.log("doCreateTestRequest",response)
+                console.log("doCreateTestRequest", response)
                 appNotification.showSuccess("Test Request Created")
                 history.push("/user-history")
             }, errorHandler)
@@ -129,14 +129,14 @@ function RequestTest() {
 
                     <Typography component="h1" variant="h5">
                         Request For Test
-                        <hr />
+                        <hr/>
                     </Typography>
 
 
                     <form className={classes.form} onSubmit={handleSubmit} noValidate>
 
                         <Grid container spacing={2}>
-                            <Grid item xs={12} >
+                            <Grid item xs={12}>
 
 
                                 <FormControl variant="outlined" className={classes.select100Form}>
@@ -156,8 +156,6 @@ function RequestTest() {
                                         <option value="false">Other</option>
                                     </Select>
                                 </FormControl>
-
-
 
 
                             </Grid>
@@ -198,10 +196,6 @@ function RequestTest() {
                             </Grid>
 
 
-
-
-
-
                             <Grid item xs={12}>
                                 <TextField
                                     variant="outlined"
@@ -215,7 +209,6 @@ function RequestTest() {
                                     id="age"
                                 />
                             </Grid>
-
 
 
                             <Grid item xs={12}>

@@ -15,7 +15,7 @@ describe('Pending Consultation  tests', () => {
 
     beforeEach(() => {
         initMockAxios();
-    mockNotificationAndConfirmationModules()
+        mockNotificationAndConfirmationModules()
     });
 
     afterEach(() => {
@@ -35,13 +35,12 @@ describe('Pending Consultation  tests', () => {
         await mountedComponent.waitForDomLoad();
 
 
+        const container = mountedComponent.getContainer()
 
-        const container= mountedComponent.getContainer()
 
+        mountedComponent.verifyOnComplete(() => {
 
-        mountedComponent.verifyOnComplete(()=>{
-
-            const record =container.find(MUIDataTable).props("data")
+            const record = container.find(MUIDataTable).props("data")
             expect(record).not.toBeNull()
             expect(record.data).not.toBeNull()
             expect(record.data.length).toBeGreaterThan(1)
@@ -49,9 +48,7 @@ describe('Pending Consultation  tests', () => {
         })
 
 
-
     });
-
 
 
     it('Pending Consultation  ,clicking assign should assign to me', async () => {
@@ -66,15 +63,13 @@ describe('Pending Consultation  tests', () => {
         await mountedComponent.waitForDomLoad();
 
 
+        const container = mountedComponent.getContainer()
 
-        const container= mountedComponent.getContainer()
 
-
-        const buttons =container.find("button").filterWhere((node) => {
-            return node.html().indexOf("Assign to Me") >=0;
+        const buttons = container.find("button").filterWhere((node) => {
+            return node.html().indexOf("Assign to Me") >= 0;
 
         });
-
 
 
         expect(buttons).not.toBeNull()
@@ -90,10 +85,9 @@ describe('Pending Consultation  tests', () => {
         mountedComponent.expectLocationContains("update-consultation")
 
 
+        mountedComponent.verifyOnComplete(() => {
 
-        mountedComponent.verifyOnComplete(()=>{
-
-            const record =container.find(MUIDataTable).props("data")
+            const record = container.find(MUIDataTable).props("data")
             expect(record).not.toBeNull()
             expect(record.data).not.toBeNull()
             expect(record.data.length).toBeGreaterThan(1)
@@ -101,10 +95,7 @@ describe('Pending Consultation  tests', () => {
         })
 
 
-
     });
-
-
 
 
 });

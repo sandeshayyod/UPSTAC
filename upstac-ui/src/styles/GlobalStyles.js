@@ -6,20 +6,20 @@ export const useGlobalStyles = makeStyles((theme) => ({
         body: {
             backgroundColor: '#e6e6e6'
         },
-        footer:{
-            marginTop:'calc(5% + 60px)',
+        footer: {
+            marginTop: 'calc(5% + 60px)',
             bottom: 0
         }
     },
-    footer:{
-        marginTop:'calc(5% + 60px)',
+    footer: {
+        marginTop: 'calc(5% + 60px)',
         bottom: 0
     },
     heroContent: {
         padding: theme.spacing(2, 0, 2),
     },
     heroContent1: {
-        padding: theme.spacing(1, 0,1),
+        padding: theme.spacing(1, 0, 1),
     },
     heroContent3: {
         padding: theme.spacing(3, 0, 6),
@@ -30,7 +30,7 @@ export const useGlobalStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        backgroundColor:'white',
+        backgroundColor: 'white',
     },
     paper: {
         marginTop: theme.spacing(3),
@@ -38,17 +38,17 @@ export const useGlobalStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         alignItems: 'center',
     },
-    mt40:{
-        marginTop:40,
+    mt40: {
+        marginTop: 40,
     },
-    w100:{
+    w100: {
         width: '100%',
     },
     marginOneSpace: {
         margin: theme.spacing(1),
     },
-    formContainer:{
-        padding:"50 50 50 50"
+    formContainer: {
+        padding: "50 50 50 50"
     },
     formFullWidth: {
         width: '100%', // Fix IE 11 issue.

@@ -1,6 +1,4 @@
-
-
-export const doGetMyLabHistoryResponse =[
+export const doGetMyLabHistoryResponse = [
     {
         "requestId": 1,
         "createdBy": {
@@ -434,9 +432,9 @@ export const doGetMyLabHistoryResponse =[
             }
         }
     }
-  ]
+]
 
-export const doGetPendingTestResponse =[
+export const doGetPendingTestResponse = [
     {
         "requestId": 151,
         "createdBy": {
@@ -577,7 +575,7 @@ export const doGetPendingTestResponse =[
         "consultation": null,
         "labResult": null
     },
-    ]
+]
 
 
 const doGetAssignLabResultResponse = {
@@ -646,9 +644,9 @@ const doGetAssignLabResultResponse = {
     }
 }
 
-export const getAssignLabResultResponseFor = (id)=>{
+export const getAssignLabResultResponseFor = (id) => {
     const response = JSON.parse(JSON.stringify(doGetAssignLabResultResponse))
-    response.id=id;
+    response.id = id;
     return response;
 
 }
@@ -720,9 +718,9 @@ const doUpdateLabResultResponse = {
 }
 
 
-export const getUpdateLabResultResponseFor = (id)=>{
+export const getUpdateLabResultResponseFor = (id) => {
     const response = JSON.parse(JSON.stringify(doUpdateLabResultResponse))
-    response.id=id;
+    response.id = id;
     return response;
 
 }

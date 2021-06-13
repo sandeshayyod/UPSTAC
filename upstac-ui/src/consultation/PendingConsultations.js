@@ -1,4 +1,4 @@
-import {Container, Grid, makeStyles, React, useEffect, useHistory, useState,} from "../component"
+import {Container, Grid, React, useEffect, useHistory, useState,} from "../component"
 import MUIDataTable from "mui-datatables";
 import {appNotification} from "../shared/notification/app-notification";
 import {doAssignConsultation, doGetPendingConsultations} from "./consultationDispatcher";
@@ -6,10 +6,8 @@ import {confirmMessageService} from "../shared/confirm/confirm-message-service";
 import Button from '@material-ui/core/Button';
 
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
-import {useDispatch} from "react-redux";
 import {errorHandler} from "../shared/common-helpers";
 import {useGlobalStyles} from "../styles/GlobalStyles";
-
 
 
 function PendingConsultations() {
@@ -88,20 +86,17 @@ function PendingConsultations() {
         const pendingRequest = requests[index]
 
 
-            await confirmMessageService.show("Do you want to Assign yourself for Consultaion " + pendingRequest.name + "?")
+        await confirmMessageService.show("Do you want to Assign yourself for Consultaion " + pendingRequest.name + "?")
 
-            doAssignConsultation(pendingRequest.requestId).subscribe((res) => {
-                appNotification.showSuccess("Request Assigned to you, Please update your diagnosis details.")
+        doAssignConsultation(pendingRequest.requestId).subscribe((res) => {
+            appNotification.showSuccess("Request Assigned to you, Please update your diagnosis details.")
 
-                history.push("/update-consultation/" + pendingRequest.requestId)
+            history.push("/update-consultation/" + pendingRequest.requestId)
 
-            }, errorHandler);
-
-
+        }, errorHandler);
 
 
     }
-
 
 
     function reloadPendingConsultations() {

@@ -31,7 +31,7 @@ export const doGetAllTestRequests = (thresholds) => {
 
 
     return http.get(doGetAllTestRequestsUrl).pipe(
-        map((items) =>   {
+        map((items) => {
 
 
             return mergeTestRequestsAndThresholdDetails(items, thresholds);
@@ -67,13 +67,13 @@ export const doGetAnalyticsFromThresholds = (thresholds) => {
 
 
     return http.get(doGetAllTestRequestsUrl).pipe(
-        map((items) =>   getAllDataWithPinCodes(items,thresholds))
+        map((items) => getAllDataWithPinCodes(items, thresholds))
     );
 }
 export const doGetPendingApprovals = () => {
 
     return http.get(doGetPendingApprovalsUrl).pipe(
-        map((items) =>   parseApprovalItems(items))
+        map((items) => parseApprovalItems(items))
     );
 }
 
@@ -85,11 +85,11 @@ export const doUpdateAllThresholds = (allThresholds) => {
 
 }
 
-export const downloadDocument = (id,fileName) => {
+export const downloadDocument = (id, fileName) => {
 
     const url = downloadDocumentBaseUrl + id;
 
-     http.downloadFileFromServer(url,fileName);
+    http.downloadFileFromServer(url, fileName);
 
 
 }
@@ -100,7 +100,6 @@ export function updateApproval(id, status) {
         "status": status,
         "userId": id
     }
-
 
 
     return http.put(updateApprovalUrl, request);

@@ -13,5 +13,4 @@ jest.mock('react-chartjs-2', () => ({
 }));
 
 
-
-Enzyme.configure({ adapter: new Adapter() });
+Enzyme.configure({adapter: new Adapter()});

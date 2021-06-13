@@ -30,14 +30,12 @@ describe('View Consultation Request History tests', () => {
         await mountedComponent.waitForDomLoad();
 
 
+        const container = mountedComponent.getContainer()
 
-        const container= mountedComponent.getContainer()
-
-        const buttons =container.find("button").filterWhere((node) => {
-            return node.html().toUpperCase().indexOf("UPDATE") >=0;
+        const buttons = container.find("button").filterWhere((node) => {
+            return node.html().toUpperCase().indexOf("UPDATE") >= 0;
 
         });
-
 
 
         expect(buttons).not.toBeNull()
@@ -50,11 +48,7 @@ describe('View Consultation Request History tests', () => {
         mountedComponent.expectLocationContains("update-consultation")
 
 
-
-
     });
-
-
 
 
 });

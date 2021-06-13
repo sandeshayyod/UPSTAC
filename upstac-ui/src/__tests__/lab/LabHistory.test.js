@@ -1,11 +1,6 @@
 import {initMockAxios, resetMockAxios} from "../../../__testshared/shared/frameworks/mock-http";
-import {setupMocksForGetMyConsultationHistory} from "../../../__testshared/shared/api/mock-consultation";
 import {mountComponentWithStoreAndHistory} from "../../../__testshared/shared/component-helper";
-import ConsultationHistory from "../../consultation/ConsultationHistory";
-import {
-    getStoreForGovernmentAuthority,
-    getStoreForLoggedInTester
-} from "../../../__testshared/shared/store/mock-store-service";
+import {getStoreForLoggedInTester} from "../../../__testshared/shared/store/mock-store-service";
 import React from "react";
 import LabHistory from "../../lab/LabHistory";
 import {setupMocksForGetMyLabHistory} from "../../../__testshared/lab/mock-lab";
@@ -35,14 +30,12 @@ describe('Lab History tests', () => {
         await mountedComponent.waitForDomLoad();
 
 
+        const container = mountedComponent.getContainer()
 
-        const container= mountedComponent.getContainer()
-
-        const buttons =container.find("button").filterWhere((node) => {
-            return node.html().toUpperCase().indexOf("UPDATE") >=0;
+        const buttons = container.find("button").filterWhere((node) => {
+            return node.html().toUpperCase().indexOf("UPDATE") >= 0;
 
         });
-
 
 
         expect(buttons).not.toBeNull()
@@ -55,11 +48,7 @@ describe('Lab History tests', () => {
         mountedComponent.expectLocationContains("update-lab-report")
 
 
-
-
     });
-
-
 
 
 });

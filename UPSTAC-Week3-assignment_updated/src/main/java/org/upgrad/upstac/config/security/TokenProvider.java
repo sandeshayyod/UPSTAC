@@ -60,8 +60,6 @@ public class TokenProvider implements Serializable {
         final String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
-
-        log.info("authorities", authorities);
         return Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
@@ -90,7 +88,7 @@ public class TokenProvider implements Serializable {
         final Claims claims = claimsJws.getBody();
 
 
-        log.info("claims" + claims.get(AUTHORITIES_KEY).toString());
+        //    log.info("claims" + claims.get(AUTHORITIES_KEY).toString());
         final Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
                         .map(SimpleGrantedAuthority::new)

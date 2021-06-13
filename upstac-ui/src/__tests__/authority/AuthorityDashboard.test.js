@@ -9,10 +9,6 @@ import AuthorityDashboard from "../../authority/AuthorityDashboard";
 import {Bar, Doughnut} from "react-chartjs-2";
 import {mountComponentWithStoreAndHistory} from "../../../__testshared/shared/component-helper";
 import {getStoreForGovernmentAuthority} from "../../../__testshared/shared/store/mock-store-service";
-import {
-    getAllHomeQuarantineAdmitChartDetails,
-    getAllPostiveNegativeChartDetails
-} from "../../authority/shared/dashboard-charts";
 
 
 describe('Authority Dashboard tests', () => {
@@ -41,8 +37,8 @@ describe('Authority Dashboard tests', () => {
         await mountedComponent.waitForDomLoad();
 
 
-        const container= mountedComponent.getContainer()
-        mountedComponent.verifyOnComplete(()=>{
+        const container = mountedComponent.getContainer()
+        mountedComponent.verifyOnComplete(() => {
 
             expect(container.find(Doughnut)).not.toBeNull()
             container.find(Doughnut).forEach((node) => {
@@ -64,10 +60,6 @@ describe('Authority Dashboard tests', () => {
         })
 
 
-
-
-
-
     });
 
     it('AuthorityDashboard should throw error , when server is down', async () => {
@@ -82,7 +74,7 @@ describe('Authority Dashboard tests', () => {
 
         const container = mountedComponent.getContainer()
 
-        process.nextTick(() =>{
+        process.nextTick(() => {
 
             container.find(Bar).forEach((node) => {
 

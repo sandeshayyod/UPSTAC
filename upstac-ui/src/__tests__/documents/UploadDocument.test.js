@@ -23,24 +23,25 @@ describe('Upload Document tests', () => {
     it('Uploading document for tester should display tester', async () => {
 
 
-
-        const id =21;
+        const id = 21;
         setupMocksForUploadDocument(id)
-        const defaultUrl='/upload-document/TESTER/21';
-        const routePath='/upload-document/:role/:id'
+        const defaultUrl = '/upload-document/TESTER/21';
+        const routePath = '/upload-document/:role/:id'
 
-        const store= getStoreForAnonymousUser()
+        const store = getStoreForAnonymousUser()
 
 
-        const mountedComponent= mountComponentWithStoreAndHistoryAndUrl( <UploadDocument/>,{ store,defaultUrl,routePath})
-
+        const mountedComponent = mountComponentWithStoreAndHistoryAndUrl(<UploadDocument/>, {
+            store,
+            defaultUrl,
+            routePath
+        })
 
 
         await mountedComponent.waitForDomLoad();
 
 
-
-        const container= mountedComponent.getContainer()
+        const container = mountedComponent.getContainer()
 
         expect(container.html()).toContain("Please upload the Lab Tester ID card for account verification")
 
@@ -57,23 +58,24 @@ describe('Upload Document tests', () => {
     it('Uploading document without not agreeing conditions should throw error', async () => {
 
 
+        const id = 21;
+        const defaultUrl = '/upload-document/DOCTOR/21';
+        const routePath = '/upload-document/:role/:id'
 
-        const id =21;
-        const defaultUrl='/upload-document/DOCTOR/21';
-        const routePath='/upload-document/:role/:id'
-
-        const store= getStoreForAnonymousUser()
+        const store = getStoreForAnonymousUser()
 
 
-        const mountedComponent= mountComponentWithStoreAndHistoryAndUrl( <UploadDocument/>,{ store,defaultUrl,routePath})
-
+        const mountedComponent = mountComponentWithStoreAndHistoryAndUrl(<UploadDocument/>, {
+            store,
+            defaultUrl,
+            routePath
+        })
 
 
         await mountedComponent.waitForDomLoad();
 
 
-
-        const container= mountedComponent.getContainer()
+        const container = mountedComponent.getContainer()
 
         expect(container.html()).toContain("Please upload the Doctor ID card for account verification")
 
@@ -82,7 +84,7 @@ describe('Upload Document tests', () => {
 
         await mountedComponent.submitForm("form")
 
-        mountedComponent.verifyOnComplete(()=>{
+        mountedComponent.verifyOnComplete(() => {
 
             expect(appNotificationModule.appNotification.showError).toBeCalled()
 
@@ -92,30 +94,31 @@ describe('Upload Document tests', () => {
     it('Uploading document without selecting files should throw error', async () => {
 
 
+        const id = 21;
+        const defaultUrl = '/upload-document/DOCTOR/21';
+        const routePath = '/upload-document/:role/:id'
 
-        const id =21;
-        const defaultUrl='/upload-document/DOCTOR/21';
-        const routePath='/upload-document/:role/:id'
-
-        const store= getStoreForAnonymousUser()
+        const store = getStoreForAnonymousUser()
 
 
-        const mountedComponent= mountComponentWithStoreAndHistoryAndUrl( <UploadDocument/>,{ store,defaultUrl,routePath})
-
+        const mountedComponent = mountComponentWithStoreAndHistoryAndUrl(<UploadDocument/>, {
+            store,
+            defaultUrl,
+            routePath
+        })
 
 
         await mountedComponent.waitForDomLoad();
 
 
-
-        const container= mountedComponent.getContainer()
+        const container = mountedComponent.getContainer()
 
 
         mountedComponent.setFormControlChecked('[id="documentAgreeCondition"]')
 
         await mountedComponent.submitForm("form")
 
-        mountedComponent.verifyOnComplete(()=>{
+        mountedComponent.verifyOnComplete(() => {
 
 
             expect(appNotificationModule.appNotification.showError).toBeCalled()
@@ -129,24 +132,25 @@ describe('Upload Document tests', () => {
     it('Uploading document when server down should throw error', async () => {
 
 
-
-        const id =21;
+        const id = 21;
         setupMockErrorForUploadDocument(id)
-        const defaultUrl='/upload-document/DOCTOR/21';
-        const routePath='/upload-document/:role/:id'
+        const defaultUrl = '/upload-document/DOCTOR/21';
+        const routePath = '/upload-document/:role/:id'
 
-        const store= getStoreForAnonymousUser()
+        const store = getStoreForAnonymousUser()
 
 
-        const mountedComponent= mountComponentWithStoreAndHistoryAndUrl( <UploadDocument/>,{ store,defaultUrl,routePath})
-
+        const mountedComponent = mountComponentWithStoreAndHistoryAndUrl(<UploadDocument/>, {
+            store,
+            defaultUrl,
+            routePath
+        })
 
 
         await mountedComponent.waitForDomLoad();
 
 
-
-        const container= mountedComponent.getContainer()
+        const container = mountedComponent.getContainer()
 
         mountedComponent.setFileValue('[id="fileUpdate"]', 'DOCTOR UPLOAD')
 
@@ -156,10 +160,9 @@ describe('Upload Document tests', () => {
         await mountedComponent.submitForm("form")
 
 
-
         await mountedComponent.waitForDomLoad();
 
-        mountedComponent.verifyOnComplete(()=>{
+        mountedComponent.verifyOnComplete(() => {
 
             expect(appNotificationModule.appNotification.showError).toBeCalled()
 

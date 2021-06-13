@@ -1,13 +1,9 @@
-import {allThresholdsResponse} from "../../../../__testshared/shared/data/threshold-responses";
 import {
     createInitiatedRequestWith,
-    createLabTestCompletedWith,
-    getAllTestRequests
+    createLabTestCompletedWith
 } from "../../../../__testshared/shared/data/testrequests";
-import {mergeTestRequestsAndThresholdDetails} from "../../../authority/shared/authority-data-parser";
 import {getRequestHistoryOptions} from "../../../authority/shared/view-all-request-options";
 import {mountComponentWithStoreAndHistory} from "../../../../__testshared/shared/component-helper";
-import AuthorityDashboard from "../../../authority/AuthorityDashboard";
 import {getStoreForGovernmentAuthority} from "../../../../__testshared/shared/store/mock-store-service";
 import React from "react";
 import {setupMocksForTestFlow} from "../../../../__testshared/shared/api/mock-testrequests";
@@ -44,28 +40,28 @@ describe('View All Request Options Tests', () => {
         items.push(createLabTestCompletedWith(2, "AnotherUSER"))
         const options = getRequestHistoryOptions(items);
 
-        const dataIndex=0
+        const dataIndex = 0
         setupMocksForTestFlow(2)
-            const rowData =['a','b'];
-            const rowMeta ={dataIndex};
+        const rowData = ['a', 'b'];
+        const rowMeta = {dataIndex};
 
-            const element =<Table>
-                <TableBody>
-                {options.renderExpandableRow(rowData,rowMeta)}
-                </TableBody>
-            </Table>
+        const element = <Table>
+            <TableBody>
+                {options.renderExpandableRow(rowData, rowMeta)}
+            </TableBody>
+        </Table>
         const mountedComponent = mountComponentWithStoreAndHistory(element,
             getStoreForGovernmentAuthority())
 
 
         await mountedComponent.waitForDomLoad();
 
-        const component =mountedComponent.getContainer();
-mountedComponent.verifyOnComplete(()=>{
+        const component = mountedComponent.getContainer();
+        mountedComponent.verifyOnComplete(() => {
 
-    expect(component.find(TestFlow)).not.toBeNull();
+            expect(component.find(TestFlow)).not.toBeNull();
 
-})
+        })
 
     });
 

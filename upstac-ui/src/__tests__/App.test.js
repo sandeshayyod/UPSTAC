@@ -5,22 +5,19 @@ import {MemoryRouter, Route} from "react-router-dom";
 //on  Logging in Default route is redirected to profile
 //on  Logging in Http Token is set
 import LoadingIndicatorComponent from "../shared/loader/loading-indicator-component";
-
-import TestRenderer from "react-test-renderer";
-import { getStoreForLoggedInUser, getStoreForAnonymousUser} from "../../__testshared/shared/store/mock-store-service";
-import {createMemoryHistory} from "history";
+import {getStoreForLoggedInUser} from "../../__testshared/shared/store/mock-store-service";
 import {Provider} from "react-redux";
-import { shallow,mount } from 'enzyme';
+import {mount} from 'enzyme';
 
 describe('App Component shallow tests', () => {
 
     it('should render correctly in "debug" mode', () => {
 
 
-        const wrapper = mount(<Provider  store={getStoreForLoggedInUser()}>
-            <MemoryRouter >
-                <App  />
-            </MemoryRouter >
+        const wrapper = mount(<Provider store={getStoreForLoggedInUser()}>
+            <MemoryRouter>
+                <App/>
+            </MemoryRouter>
         </Provider>);
 
 

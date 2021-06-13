@@ -24,7 +24,7 @@ describe('View All Request History tests', () => {
         setupMocksForAllThreshold();
         setupMocksForAllRequests();
 
-        const loadResults = (results)=>{
+        const loadResults = (results) => {
             expect(results).not.toBeNull();
             done()
         }
@@ -36,11 +36,10 @@ describe('View All Request History tests', () => {
         await mountedComponent.waitForDomLoad();
 
 
+        const container = mountedComponent.getContainer()
+        mountedComponent.verifyOnComplete(() => {
 
-        const container= mountedComponent.getContainer()
-        mountedComponent.verifyOnComplete(()=>{
-
-            const record =container.find(MUIDataTable).props("data")
+            const record = container.find(MUIDataTable).props("data")
             expect(record).not.toBeNull()
             expect(record.data).not.toBeNull()
             expect(record.data.length).toBeGreaterThan(1)
@@ -48,10 +47,7 @@ describe('View All Request History tests', () => {
         })
 
 
-
     });
-
-
 
 
 });

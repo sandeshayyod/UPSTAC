@@ -1,22 +1,46 @@
 package org.upgrad.upstac.config.loaddata;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
-import org.upgrad.upstac.auth.register.RegisterRequest;
+import org.springframework.web.multipart.MultipartFile;
+import org.upgrad.upstac.documents.DocumentService;
+import org.upgrad.upstac.settings.TestPositiveCountThreshold;
+import org.upgrad.upstac.settings.ThresholdService;
+import org.upgrad.upstac.settings.ThresholdType;
+import org.upgrad.upstac.testrequests.TestRequest;
+import org.upgrad.upstac.testrequests.authority.models.UpdateApprovalRequest;
+import org.upgrad.upstac.testrequests.consultation.ConsultationService;
+import org.upgrad.upstac.testrequests.consultation.models.CreateConsultationRequest;
+import org.upgrad.upstac.testrequests.consultation.models.DoctorSuggestion;
+import org.upgrad.upstac.testrequests.lab.LabResultService;
+import org.upgrad.upstac.testrequests.lab.models.CreateLabResult;
+import org.upgrad.upstac.testrequests.lab.models.TestStatus;
+import org.upgrad.upstac.testrequests.models.CreateTestRequest;
+import org.upgrad.upstac.testrequests.services.TestRequestCreateService;
+import org.upgrad.upstac.testrequests.services.TestRequestQueryService;
+import org.upgrad.upstac.testrequests.services.TestRequestUpdateService;
 import org.upgrad.upstac.users.User;
 import org.upgrad.upstac.users.UserService;
-import org.upgrad.upstac.users.models.Gender;
+import org.upgrad.upstac.users.models.AccountStatus;
 import org.upgrad.upstac.users.roles.RoleService;
 import org.upgrad.upstac.users.roles.UserRole;
 
-import java.time.LocalDate;
-import java.util.*;
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.upgrad.upstac.shared.DateParser.getStringFromDate;
+import static org.upgrad.upstac.config.loaddata.DataGenerator.*;
+import static org.upgrad.upstac.shared.FileReader.getMultipartFileFrom;
+import static org.upgrad.upstac.shared.FileReader.readFromClassPath;
 
 
 @Component
@@ -29,196 +53,313 @@ public class AppInitializationService implements ApplicationListener<Application
     @Autowired
     UserService userService;
 
+    @Autowired
+    TestRequestCreateService testRequestCreateService;
 
+    @Autowired
+    TestRequestQueryService testRequestQueryService;
+
+    @Autowired
+    TestRequestUpdateService testRequestUpdateService;
+
+    @Autowired
+    LabResultService labResultService;
+
+    @Autowired
+    ConsultationService consultationService;
+
+    @Autowired
+    ThresholdService thresholdService;
+
+    @Autowired
+    DocumentService documentService;
+
+    @Value("${app.testrun}")
+    public boolean isTestRun = false;
+
+    List<User> allUsers = new ArrayList<>();
+    List<User> allDoctors = new ArrayList<>();
+    List<User> allTesters = new ArrayList<>();
     User defaultDoctor = null;
     User defaultTester = null;
     User govtAuthority = null;
-    static List<String> generatedPhones = new ArrayList<>();
-
     private static final Logger log = LoggerFactory.getLogger(AppInitializationService.class);
 
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
 
-
-        if (roleService.shouldInitialize()) {
-            log.info("loading default values");
+        if (isTestRun == false && roleService.shouldInitialize()) {
             initialize();
-
-            log.info("loaded default values");
         }
 
 
     }
 
-
     public void initialize() {
+        initDataGenerator();
+        log.info("Loading Default Values Please wait");
+        addDefaultRoles();
+        addDefaultThresholds();
+
+        addDefaultUsersAndTestRequest();
+
+
+        log.info("Loaded all Default Values");
+    }
+
+
+    @Transactional
+    public void addDefaultRoles() {
 
         roleService.saveRoleFor(UserRole.USER);
         roleService.saveRoleFor(UserRole.TESTER);
         roleService.saveRoleFor(UserRole.DOCTOR);
         roleService.saveRoleFor(UserRole.GOVERNMENT_AUTHORITY);
-        addDefaultUserData();
 
     }
 
+    @Transactional
+    public void addDefaultThresholds() {
+
+
+        thresholdService.update(createThreshold(ThresholdType.RED, 18));
+        thresholdService.update(createThreshold(ThresholdType.YELLOW, 10));
+        thresholdService.update(createThreshold(ThresholdType.GREEN, 5));
+
+    }
+
+    public TestPositiveCountThreshold createThreshold(ThresholdType thresholdType, int maxLimit) {
+        TestPositiveCountThreshold testPositiveCountThreshold = new TestPositiveCountThreshold();
+        testPositiveCountThreshold.setThresholdType(thresholdType);
+        testPositiveCountThreshold.setMaxLimit(maxLimit);
+        return testPositiveCountThreshold;
+    }
+
+
+    public void addDefaultUsersAndTestRequest() {
+
+
+        addDefaultUserData();
+
+        loadLotsOfUserData();
+
+        addUnverifiedUsers();
+
+
+    }
 
     public void addDefaultUserData() {
 
-        createUserFrom("user", getRandomPinCode());
+        allUsers.add(createUserFrom("user", getRandomPinCode()));
+        allUsers.add(createUserFrom("userB", getRandomPinCode()));
+        allUsers.add(createUserFrom("userC", getRandomPinCode()));
+        allUsers.add(createUserFrom("userD", getRandomPinCode()));
 
 
         defaultDoctor = userService.addDoctor(createRegisterRequestWith("doctor", getRandomPinCode()));
+        allDoctors.add(defaultDoctor);
+        allDoctors.add(userService.addDoctor(createRegisterRequestWith("doctorA", getRandomPinCode())));
 
 
         defaultTester = userService.addTester(createRegisterRequestWith("tester", getRandomPinCode()));
-
+        allTesters.add(defaultTester);
+        allTesters.add(userService.addTester(createRegisterRequestWith("testerA", getRandomPinCode())));
         govtAuthority = userService.addGovernmentAuthority(createRegisterRequestWith("authority", getRandomPinCode()));
 
+        approveAll(allDoctors);
+        approveAll(allTesters);
     }
+
+    void addUnverifiedUsers() {
+
+        createUnVerifiedDoctor("doctorunknown", "id-1.png");
+        createUnVerifiedDoctor("doctoranotherUnknown", "id-2.png");
+
+
+        createUnVerifiedTester("testerUnknown", "id-1.png");
+        createUnVerifiedTester("testeranotherUnknown", "id-2.png");
+
+
+    }
+
+    private User createUnVerifiedDoctor(String unknownDoctor, String fileName) {
+        User doctor = userService.addDoctor(createRegisterRequestWith(unknownDoctor, getRandomPinCode()));
+        MultipartFile result = getMultipartFileFrom(fileName);
+        documentService.save(doctor.getId(), result);
+        return doctor;
+    }
+
+    private User createUnVerifiedTester(String unknownTester, String fileName) {
+        User tester = userService.addTester(createRegisterRequestWith(unknownTester, getRandomPinCode()));
+        MultipartFile result = getMultipartFileFrom(fileName);
+        documentService.save(tester.getId(), result);
+        return tester;
+    }
+
+
+    public UpdateApprovalRequest createApprovalRequestFor(User user) {
+        UpdateApprovalRequest updateApprovalRequest = new UpdateApprovalRequest();
+        updateApprovalRequest.setUserId(user.getId());
+        updateApprovalRequest.setStatus(AccountStatus.APPROVED);
+        return updateApprovalRequest;
+    }
+
+
+    public List<TestData> getAllData() {
+
+        try {
+
+            String settingsFileContent = readFromClassPath("test-data.json");
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            return mapper.readValue(settingsFileContent, new TypeReference<List<TestData>>() {
+            });
+
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+
+    public void approveAll(List<User> users) {
+
+
+        users.stream()
+                .map(this::createApprovalRequestFor)
+                .forEach(this.userService::updateApprovalStatus);
+    }
+
+    public void loadLotsOfUserData() {
+
+
+        List<TestData> allUsers = getAllData();//.subList(0,3);
+
+        // log.info(allUsers.toString());
+        allUsers.forEach(input -> {
+
+            //log.info("current User"  + input.toString());
+            User updatedUser = createUserFrom(input.getName(), input.getPincode());
+            // log.info("updatedUser User"  + updatedUser.toString());
+            TestRequest testRequest = createTestRequestsForUser(input, updatedUser);
+
+            //log.info(testRequest.toString());
+
+        });
+
+
+    }
+
+    public TestRequest createTestRequestsForUser(TestData input, User updatedUser) {
+        TestRequest testRequest = createTestRequestFrom(updatedUser);
+        User tester = defaultTester;
+        User approvedDoctor = defaultDoctor;
+        if (input.canAssignForLabTest()) {
+            testRequestUpdateService.assignForLabTest(testRequest.getRequestId(), tester);
+
+            if (input.canUpdateLabTest()) {
+
+
+                testRequestUpdateService.updateLabTest(testRequest.getRequestId(), createLabResultWith(input, updatedUser), tester);
+
+
+                if (input.canAssignConsultation()) {
+
+                    testRequestUpdateService.assignForConsultation(testRequest.getRequestId(), approvedDoctor);
+
+                    if (input.canCompleteTest()) {
+
+                        testRequestUpdateService.updateConsultation(testRequest.getRequestId(), createConsultationRequestWith(input, updatedUser), approvedDoctor);
+                    }
+
+                }
+
+
+            }
+
+
+        }
+        return testRequest;
+    }
+
 
     public User createUserFrom(String name, Integer pincode) {
         return userService.addUser(createRegisterRequestWith(name, pincode));
     }
 
-    public static RegisterRequest createRegisterRequestWith(String user, int pincode) {
-        RegisterRequest registerRequest = new RegisterRequest();
-        String userNameinLowerCase = user.replace(" ", "").toLowerCase().replaceAll("[^a-z0-9]", "");
-        ;
-        registerRequest.setUserName(userNameinLowerCase);
-        registerRequest.setPassword("password");
-        registerRequest.setFirstName(user);
-        registerRequest.setLastName("");
-        registerRequest.setGender(getRandomGender());
-        registerRequest.setAddress(getRandomAddress(pincode));
-        registerRequest.setPhoneNumber(getAPhoneNumber());
-        registerRequest.setPinCode(pincode);
-        registerRequest.setDateOfBirth(getRandomDateOfBirth());
-        registerRequest.setEmail(userNameinLowerCase + "@upgrad.com");
-        return registerRequest;
-    }
+    private CreateConsultationRequest createConsultationRequestWith(TestData input, User updatedUser) {
+        CreateConsultationRequest createConsultationRequest = new CreateConsultationRequest();
 
-    private static String getAPhoneNumber() {
-        String phone = getRandomPhoneNumber();
-        while (generatedPhones.contains(phone) == true) {
 
-            phone = getRandomPhoneNumber();
+        if (input.isTestPositive()) {
+            if (input.canAdmit()) {
+                createConsultationRequest.setComments("should admit as high bp");
+                createConsultationRequest.setSuggestion(DoctorSuggestion.ADMIT);
+            } else {
+                createConsultationRequest.setComments("can home quarantine");
+                createConsultationRequest.setSuggestion(DoctorSuggestion.HOME_QUARANTINE);
+            }
+        } else {
+            createConsultationRequest.setComments("No Issues");
+            createConsultationRequest.setSuggestion(DoctorSuggestion.NO_ISSUES);
         }
-        generatedPhones.add(phone);
-        return phone;
+
+        return createConsultationRequest;
     }
 
-    static boolean canSetOtherGender() {
-        Random r = new Random();
-        int low = 1;
-        int high = 100;
-        int result = r.nextInt(high - low) + low;
-        return result == 8;
-    }
+    private CreateLabResult createLabResultWith(TestData input, User updatedUser) {
+        CreateLabResult createLabResult = new CreateLabResult();
 
-    private static Gender getRandomGender() {
+        if (input.isTestPositive()) {
 
-        List<Gender> genders = Arrays.asList(Gender.MALE, Gender.FEMALE);
+            createLabResult.setResult(TestStatus.POSITIVE);
+            if (input.canAdmit()) {
+                createLabResult.setBloodPressure("190/120");
+                createLabResult.setComments("high Bp");
+                createLabResult.setHeartBeat("140/200");
+                createLabResult.setOxygenLevel("120-130");
+                createLabResult.setTemperature("108");
+            } else {
+                createLabResult.setBloodPressure("130/90");
+                createLabResult.setComments("Asymptomatic");
+                createLabResult.setHeartBeat("90/95");
+                createLabResult.setOxygenLevel("90-95");
 
-        Random rand = new Random();
-        final Gender gender = genders.get(rand.nextInt(genders.size()));
+                createLabResult.setTemperature("102");
+            }
 
-        if (gender.equals(Gender.FEMALE) && canSetOtherGender())
-            return Gender.OTHER;
-        else
-            return gender;
-    }
+        } else {
+            createLabResult.setBloodPressure("130/90");
+            createLabResult.setComments("Normal");
+            createLabResult.setHeartBeat("90/95");
+            createLabResult.setOxygenLevel("90-95");
+            createLabResult.setResult(TestStatus.NEGATIVE);
+            createLabResult.setTemperature("97");
+        }
 
-    static String getRandomDoorNumber() {
-
-        int min = 1;
-        int max = 275;
-
-        Random r = new Random();
-        int l = (max - min) + 1;
-        int res = r.nextInt(l) + min;
-
-        String myChar = getRandomItemInStrings(Arrays.asList("", "A", "B", "C", "D", "E", "F", "G", "H"));
-
-
-        if (myChar.equalsIgnoreCase(""))
-            return "" + res;
-        else
-            return res + "/" + myChar;
-    }
-
-    static String getRandomItemInStrings(List<String> characters) {
-        Random rand = new Random();
-        return characters.get(rand.nextInt(characters.size()));
-    }
-
-    private static String getRandomStreetName() {
-
-        String street = getRandomItemInStrings(Arrays.asList("Gandhi Street", "Nehru Street", "Nietzche Avenue", "Jefferson Avenue", "Grant Avenue", "Franklin Avenue", "4th Street North", "8th Street", "Strawberry Lane", "Sycamore Street", "Monroe Drive", "Route 10", "Highland Avenue", "Sherman Street", "Mulberry Court", "Main Street North", "Hillside Drive", "Andover Court", "Eagle Street", "Lakeview Drive", "Mulberry Lane", "Route 6", "Lantern Lane", "5th Street", "Buttonwood Drive", "Colonial Avenue", "Ann Street", "Brookside Drive", "Canterbury Court", "Marshall Street", "Hudson Street", "Union Street", "Jones Street", "Sycamore Lane", "6th Avenue", "Clark Street", "Cedar Avenue", "Park Street", "Evergreen Lane", "Aspen Drive", "6th Street North", "Magnolia Avenue", "Heather Lane", "Spruce Avenue", "B Street", "Ashley Court", "York Street", "Front Street North", "Brook Lane", "Jackson Avenue", "Hillcrest Drive", "Windsor Drive", "2nd Street"));
-
-        return street;
-
-    }
-
-    static String getRandomAddress(Integer pinCode) {
-
-
-        Map<Integer, String> addresses = new HashMap<>();
-        addresses.put(110001, getRandomDoorNumber() + " - " + getRandomStreetName() + ",New Delhi");
-        addresses.put(560003, getRandomDoorNumber() + " - " + getRandomStreetName() + ",Bangalore");
-        addresses.put(400001, getRandomDoorNumber() + " - " + getRandomStreetName() + ",Mumbai");
-        addresses.put(700004, getRandomDoorNumber() + " - " + getRandomStreetName() + ",KOlkatta");
-
-
-        if (addresses.containsKey(pinCode))
-            return addresses.get(pinCode);
-        else
-            return getRandomDoorNumber() + " - " + getRandomStreetName() + ",Goa";
-
-    }
-
-    static int getRandomPinCode() {
-
-
-        List<Integer> integers = Arrays.asList(110001, 560003, 400001, 700004);
-        Random rand = new Random();
-        return integers.get(rand.nextInt(integers.size()));
-
+        return createLabResult;
     }
 
 
-    private static String getRandomPhoneNumber() {
+    TestRequest createTestRequestFrom(User updatedUser) {
+        CreateTestRequest createTestRequest = new CreateTestRequest();
+        createTestRequest.setAge(getRandomAge());
+        createTestRequest.setPhoneNumber(updatedUser.getPhoneNumber());
+        createTestRequest.setEmail(updatedUser.getEmail());
+        createTestRequest.setPinCode(updatedUser.getPinCode());
+        createTestRequest.setName(updatedUser.getFirstName());
+        createTestRequest.setGender(updatedUser.getGender());
+        createTestRequest.setAddress(updatedUser.getAddress());
 
-        Long start = 9629150000L;
 
-        int min = 1000;
-        int max = 9999;
+        TestRequest testRequestFrom = testRequestCreateService.createTestRequestFrom(updatedUser, createTestRequest);
 
-        Random r = new Random();
-        int l = (max - min) + 1;
-        int res = r.nextInt(l) + min;
-        long l1 = start + res;
-        return "" + l1;
+        //  log.info("created test request " + testRequestFrom.toString());
+        return testRequestFrom;
     }
 
-    public static Integer getRandomAge() {
-
-        int min = 21;
-        int max = 75;
-
-        Random r = new Random();
-        int l = (max - min) + 1;
-        int res = r.nextInt(l) + min;
-
-        return res;
-    }
-
-    private static String getRandomDateOfBirth() {
-
-
-        return getStringFromDate(LocalDate.now().minusYears(getRandomAge()));
-    }
 
 }
 

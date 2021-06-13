@@ -8,14 +8,13 @@ import {getAsUser} from "../../auth/user";
 import {REHYDRATE} from "redux-persist";
 
 
-
 describe('Auth Reducer Tests', () => {
 
     function applyActionInStore(inputAction) {
         return reducer(undefined, inputAction)
     }
 
-    beforeEach(()=>{
+    beforeEach(() => {
 
 
     })
@@ -48,9 +47,8 @@ describe('Auth Reducer Tests', () => {
     it('should update auth data when REHYDRATE called with payload', () => {
 
 
-
         const payload = {}
-        payload.auth={}
+        payload.auth = {}
         const token = "sometoken";
         payload.auth.token = token;
         payload.auth.user = getAsUser(getMockedUserDetailsResponseForNormalUser());
@@ -68,7 +66,6 @@ describe('Auth Reducer Tests', () => {
 
 
     it('should update Login Data when LOGIN called with valid payload', () => {
-
 
 
         const payload = {}

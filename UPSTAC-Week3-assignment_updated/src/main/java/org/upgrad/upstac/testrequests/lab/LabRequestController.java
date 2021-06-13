@@ -8,11 +8,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.upgrad.upstac.config.security.UserLoggedInService;
 import org.upgrad.upstac.exception.AppException;
-import org.upgrad.upstac.testrequests.RequestStatus;
 import org.upgrad.upstac.testrequests.TestRequest;
-import org.upgrad.upstac.testrequests.TestRequestQueryService;
-import org.upgrad.upstac.testrequests.TestRequestUpdateService;
+import org.upgrad.upstac.testrequests.flow.TestRequestFlow;
 import org.upgrad.upstac.testrequests.flow.TestRequestFlowService;
+import org.upgrad.upstac.testrequests.lab.models.CreateLabResult;
+import org.upgrad.upstac.testrequests.models.RequestStatus;
+import org.upgrad.upstac.testrequests.services.TestRequestQueryService;
+import org.upgrad.upstac.testrequests.services.TestRequestUpdateService;
 import org.upgrad.upstac.users.User;
 
 import javax.validation.ConstraintViolationException;
@@ -28,54 +30,69 @@ public class LabRequestController {
 
     Logger log = LoggerFactory.getLogger(LabRequestController.class);
 
+
     @Autowired
     private TestRequestUpdateService testRequestUpdateService;
 
     @Autowired
     private TestRequestQueryService testRequestQueryService;
-
     @Autowired
     private TestRequestFlowService testRequestFlowService;
+
 
     @Autowired
     private UserLoggedInService userLoggedInService;
 
+
     @GetMapping("/to-be-tested")
     @PreAuthorize("hasAnyRole('TESTER')")
     public List<TestRequest> getForTests() {
-        log.info("getting requests which are ready for testing");
+
         return testRequestQueryService.findBy(RequestStatus.INITIATED);
+
     }
 
     @GetMapping
     @PreAuthorize("hasAnyRole('TESTER')")
     public List<TestRequest> getForTester() {
-        User tester = userLoggedInService.getLoggedInUser();
-        log.info("getting requests to be tested by the tester : {}", tester.getFirstName());
-        return testRequestQueryService.findByTester(tester);
+
+
+        User user = userLoggedInService.getLoggedInUser();
+        return testRequestQueryService.findByTester(user);
+
+
     }
+
 
     @PreAuthorize("hasAnyRole('TESTER')")
     @PutMapping("/assign/{id}")
     public TestRequest assignForLabTest(@PathVariable Long id) {
-        User tester = userLoggedInService.getLoggedInUser();
-        log.info("Assigning request with Id {} for lab testing by the tester : {}", id, tester.getFirstName());
-        return testRequestUpdateService.assignForLabTest(id, tester);
+
+        try {
+            User user = userLoggedInService.getLoggedInUser();
+            TestRequest result = testRequestUpdateService.assignForLabTest(id, user);
+            log.info("testRequest updated " + result.toString());
+            return result;
+
+        } catch (AppException e) {
+            throw asBadRequest(e.getMessage());
+        }
     }
 
     @PreAuthorize("hasAnyRole('TESTER')")
     @PutMapping("/update/{id}")
     public TestRequest updateLabTest(@PathVariable Long id, @RequestBody CreateLabResult createLabResult) {
+
         try {
             User tester = userLoggedInService.getLoggedInUser();
-            log.info("Updating request with Id {} with lab test by the tester : {}", id, tester.getFirstName());
-            return testRequestUpdateService.updateLabTest(id, createLabResult, tester);
+            TestRequest result = testRequestUpdateService.updateLabTest(id, createLabResult, tester);
+            return result;
         } catch (ConstraintViolationException e) {
-            log.error("Exception occurred while updating lab test", e);
             throw asConstraintViolation(e);
         } catch (AppException e) {
-            log.error("Exception occurred while updating lab test", e);
             throw asBadRequest(e.getMessage());
         }
     }
+
+
 }

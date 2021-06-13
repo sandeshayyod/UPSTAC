@@ -8,6 +8,6 @@ const appReducer = combineReducers({
 })
 
 export default (state, action) => {
-    const appState = action.type === LOGOUT ? undefined : { ...state }
+    const appState = action.type === LOGOUT ? undefined : {...state}
     return appReducer(appState, action)
 }

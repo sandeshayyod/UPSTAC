@@ -1,6 +1,5 @@
 import {initMockAxios, resetMockAxios} from "../../../__testshared/shared/frameworks/mock-http";
 import {mockNotificationAndConfirmationModules} from "../../../__testshared/shared/frameworks/mock-notification";
-import {setupMocksForDoAssignConsultation} from "../../../__testshared/shared/api/mock-consultation";
 import {mountComponentWithStoreAndHistory} from "../../../__testshared/shared/component-helper";
 import {getStoreForLoggedInTester} from "../../../__testshared/shared/store/mock-store-service";
 import MUIDataTable from "mui-datatables";
@@ -36,13 +35,12 @@ describe('Pending Lab  tests', () => {
         await mountedComponent.waitForDomLoad();
 
 
+        const container = mountedComponent.getContainer()
 
-        const container= mountedComponent.getContainer()
 
+        mountedComponent.verifyOnComplete(() => {
 
-        mountedComponent.verifyOnComplete(()=>{
-
-            const record =container.find(MUIDataTable).props("data")
+            const record = container.find(MUIDataTable).props("data")
             expect(record).not.toBeNull()
             expect(record.data).not.toBeNull()
             expect(record.data.length).toBeGreaterThan(1)
@@ -50,9 +48,7 @@ describe('Pending Lab  tests', () => {
         })
 
 
-
     });
-
 
 
     it('Pending Tests  ,clicking assign should assign to me', async () => {
@@ -66,15 +62,13 @@ describe('Pending Lab  tests', () => {
         await mountedComponent.waitForDomLoad();
 
 
+        const container = mountedComponent.getContainer()
 
-        const container= mountedComponent.getContainer()
 
-
-        const buttons =container.find("button").filterWhere((node) => {
-            return node.html().indexOf("Assign to Me") >=0;
+        const buttons = container.find("button").filterWhere((node) => {
+            return node.html().indexOf("Assign to Me") >= 0;
 
         });
-
 
 
         expect(buttons).not.toBeNull()
@@ -90,12 +84,7 @@ describe('Pending Lab  tests', () => {
         mountedComponent.expectLocationContains("update-lab-report")
 
 
-
-
-
     });
-
-
 
 
 });

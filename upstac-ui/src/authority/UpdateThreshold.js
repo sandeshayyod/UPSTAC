@@ -11,12 +11,12 @@ function UpdateThreshold() {
 
     const [thresholds, setThresholds] = useState([]);
 
-    function updateThreshold(thresholdType,maxLimit){
+    function updateThreshold(thresholdType, maxLimit) {
 
-        const updatedThresholds = thresholds.map(threshold=>{
+        const updatedThresholds = thresholds.map(threshold => {
 
-            if(threshold.thresholdType === thresholdType)
-                return {thresholdType,maxLimit}
+            if (threshold.thresholdType === thresholdType)
+                return {thresholdType, maxLimit}
             else
                 return threshold;
         })
@@ -27,8 +27,6 @@ function UpdateThreshold() {
     function handleSubmit(event) {
 
 
-
-
         event.preventDefault();
 
 
@@ -37,34 +35,28 @@ function UpdateThreshold() {
                 appNotification.showSuccess("Succesfully Updated Thresholds")
 
 
-            },  errorHandler)
+            }, errorHandler)
 
     }
 
-    function getAllThresholds(){
+    function getAllThresholds() {
         doGetThresholds()
             .subscribe((result) => {
 
-                   setThresholds(result)
+                setThresholds(result)
 
 
             }, errorHandler)
     }
 
 
-
     useEffect(() => {
-
 
 
         getAllThresholds();
 
 
-
-
     }, [])
-
-
 
 
     return (
@@ -74,7 +66,7 @@ function UpdateThreshold() {
                 <h1>
                     Update Thresholds
                 </h1>
-                <hr />
+                <hr/>
             </Container>
             <Container maxWidth="md">
                 <Grid justify="center"
@@ -83,9 +75,6 @@ function UpdateThreshold() {
                         <form className={classes.formFullWidth} onSubmit={handleSubmit} noValidate>
 
                             <Grid container spacing={2}>
-
-
-
 
 
                                 {thresholds.map((threshold) => (
@@ -102,18 +91,13 @@ function UpdateThreshold() {
                                             id={threshold.thresholdType}
                                             label={threshold.thresholdType}
                                             value={threshold.maxLimit}
-                                            onInput={e => updateThreshold(threshold.thresholdType,e.target.value)}
+                                            onInput={e => updateThreshold(threshold.thresholdType, e.target.value)}
 
                                         />
                                     </Grid>
 
 
                                 ))}
-
-
-
-
-
 
 
                             </Grid>

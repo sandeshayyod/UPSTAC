@@ -25,26 +25,27 @@ describe('Update Consultation  tests', () => {
 
     it('Update Consultation  should load data by id', async () => {
 
-        const id=21
+        const id = 21
         setupMocksForDoGetTestRequestByID(id)
         setupMocksForDoCompleteConsultation(id);
 
-      const defaultUrl='/update-consultation/'+id;
-      const routePath='/update-consultation/:id'
+        const defaultUrl = '/update-consultation/' + id;
+        const routePath = '/update-consultation/:id'
 
-        const store= getStoreForLoggedInDoctor()
-
-
-       const mountedComponent= mountComponentWithStoreAndHistoryAndUrl( <UpdateConsultation/>,{ store,defaultUrl,routePath})
+        const store = getStoreForLoggedInDoctor()
 
 
+        const mountedComponent = mountComponentWithStoreAndHistoryAndUrl(<UpdateConsultation/>, {
+            store,
+            defaultUrl,
+            routePath
+        })
 
 
         await mountedComponent.waitForDomLoad();
 
 
-
-        const container= mountedComponent.getContainer()
+        const container = mountedComponent.getContainer()
 
 
         mountedComponent.setInputValue('#comments', 'nothing to worry')
@@ -59,13 +60,7 @@ describe('Update Consultation  tests', () => {
         mountedComponent.expectLocationToBe("/consultation-history")
 
 
-
-
-
-
-
     });
-
 
 
 });

@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
         '&:hover': {
             color: "#3f51b5",
             backgroundColor: "#ffffff",
-            border:'1px solid #3f51b5'
+            border: '1px solid #3f51b5'
         },
     },
 
@@ -48,7 +48,7 @@ function Navbar(props) {
 
     const dispatch = useDispatch()
     const history = useHistory();
-const location =useLocation();
+    const location = useLocation();
 
     function logout() {
 
@@ -60,18 +60,16 @@ const location =useLocation();
     const classes = useStyles();
     const {user, token, isLoggedIn, roles} = useSelector(state => state.auth);
 
-    let {isUser, isDoctor, isAuthority, isTester,isApproved} = roles
+    let {isUser, isDoctor, isAuthority, isTester, isApproved} = roles
 
     const isNotAuthority = (isLoggedIn == true) && (isAuthority == false);
     const isNotLoggedIn = !isLoggedIn
 
 
-
-
     const allMenus = [
         {url: "/dashboard", label: "Dashboard", rule: isAuthority},
         {url: "/profile", label: "Profile", rule: isLoggedIn},
-         {url: "/request-test", label: "Request Test", rule: isUser},
+        {url: "/request-test", label: "Request Test", rule: isUser},
         {url: "/user-history", label: "Request History", rule: isUser},
         {url: "/lab-history", label: "Request History", rule: isTester},
         {url: "/consultation-history", label: "Request History", rule: isDoctor},
@@ -82,12 +80,12 @@ const location =useLocation();
         {url: "/view-all-requests", label: "All Requests", rule: isAuthority}
     ];
 
-    const currentPath =location.pathname
+    const currentPath = location.pathname
 
 
-    const menusToBeDisplayed = allMenus.filter(value => value.rule).map(item=>{
+    const menusToBeDisplayed = allMenus.filter(value => value.rule).map(item => {
 
-        const menuClassName = (item.url == currentPath)? classes.activeLink:classes.link;
+        const menuClassName = (item.url == currentPath) ? classes.activeLink : classes.link;
         return {...item, menuClassName}
 
     })
@@ -128,7 +126,8 @@ const location =useLocation();
 
 
                     {(isLoggedIn) ?
-                        <Button id="btnlogout" onClick={logout} color="secondary" variant="outlined" className={classes.link}>
+                        <Button id="btnlogout" onClick={logout} color="secondary" variant="outlined"
+                                className={classes.link}>
                             Logout
                         </Button> : <div>
                             <Button component={Link} to="/login" color="secondary" variant="outlined"

@@ -9,20 +9,22 @@ import {getTestFlowResponse} from "../data/testrequest-flows";
 
 export function setupMocksForTestFlow(testRequestId) {
 
-    const inputUrl = doGetTestRequestFlowBaseUrl  + testRequestId;
+    const inputUrl = doGetTestRequestFlowBaseUrl + testRequestId;
     console.log("mock url" + inputUrl)
     mockGet(inputUrl, getTestFlowResponse())
 }
 
 export function setupMocksForCreateTestRequest(name) {
 
-    mockPost(TestRequestsUrl , createRequestWith(1,name,"INITIATED"))
+    mockPost(TestRequestsUrl, createRequestWith(1, name, "INITIATED"))
 }
+
 export function setupMocksForDoGetTestRequestByID(id) {
 
-    mockGet(doGetTestRequestByIDBaseUrl + id , createRequestWith(id,"some name","COMPLETED"))
+    mockGet(doGetTestRequestByIDBaseUrl + id, createRequestWith(id, "some name", "COMPLETED"))
 }
+
 export function setupMocksForDoGetMyTestRequests() {
 
-    mockGet(TestRequestsUrl , getAllTestRequests())
+    mockGet(TestRequestsUrl, getAllTestRequests())
 }

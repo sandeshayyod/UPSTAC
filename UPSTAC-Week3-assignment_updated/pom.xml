@@ -10,9 +10,9 @@
 	</parent>
 	<groupId>org.upgrad</groupId>
 
-	<artifactId>upstac-api-w3</artifactId>
+	<artifactId>upstac-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>UpstacApi-Week-3</name>
+	<name>UpstacApi</name>
 	<description>UPSTAC Project</description>
 
 	<properties>
@@ -138,5 +138,33 @@
 
 		</plugins>
 	</build>
+
+
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<build.profile.id>dev</build.profile.id>
+				<profileActive>dev</profileActive>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<build.profile.id>prod</build.profile.id>
+				<profileActive>prod</profileActive>
+			</properties>
+		</profile>
+		<profile>
+			<id>cloud</id>
+			<properties>
+				<build.profile.id>cloud</build.profile.id>
+				<profileActive>cloud</profileActive>
+			</properties>
+		</profile>
+	</profiles>
 
 </project>

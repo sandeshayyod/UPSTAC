@@ -3,6 +3,7 @@ package org.upgrad.upstac.testrequests;
 import lombok.Data;
 import org.upgrad.upstac.testrequests.consultation.Consultation;
 import org.upgrad.upstac.testrequests.lab.LabResult;
+import org.upgrad.upstac.testrequests.models.RequestStatus;
 import org.upgrad.upstac.users.User;
 import org.upgrad.upstac.users.models.Gender;
 
@@ -33,6 +34,7 @@ public class TestRequest {
     private String email;
     private String phoneNumber;
     private Integer pinCode;
+
 
     @OneToOne(mappedBy = "request")
     Consultation consultation;

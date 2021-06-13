@@ -1,5 +1,6 @@
 package org.upgrad.upstac.auth;
 
+import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,17 +11,23 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.upgrad.upstac.auth.models.LoginRequest;
 import org.upgrad.upstac.auth.models.LoginResponse;
+import org.upgrad.upstac.auth.register.RegisterRequest;
 import org.upgrad.upstac.config.security.TokenProvider;
 import org.upgrad.upstac.exception.AppException;
+import org.upgrad.upstac.users.User;
 import org.upgrad.upstac.users.UserService;
 
+import static org.upgrad.upstac.exception.UpgradResponseStatusException.asBadRequest;
+
 @RestController
+@RequestMapping("/auth")
 public class AuthController {
 
 
@@ -41,7 +48,14 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @PostMapping("/auth/login")
+    @RequestMapping(value = "/greetings", method = RequestMethod.GET)
+    public ResponseEntity<?> greetings() {
+
+        return ResponseEntity.ok("Hello Sir");
+    }
+
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) throws AuthenticationException {
 
         try {
@@ -78,6 +92,5 @@ public class AuthController {
         }
 
     }
-
 
 }

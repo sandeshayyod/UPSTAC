@@ -17,7 +17,7 @@ describe('Common helper tests', () => {
         verify("james", "bond", "JB", "james bond");
         verify("james", "", "J", "james");
         verify("james", null, "J", "james");
-        verify(null,"james",  "J", "james");
+        verify(null, "james", "J", "james");
         verify(null, null, "UN", "");
 
 

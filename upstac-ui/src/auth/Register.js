@@ -8,11 +8,9 @@ import {
     Grid,
     Link,
     makeStyles,
-    MuiAlert,
     Radio,
     RadioGroup,
     React,
-    Snackbar,
     TextField,
     Typography,
     useHistory,
@@ -27,7 +25,6 @@ import Select from "@material-ui/core/Select";
 import {getAsFormatted} from "../shared/date-helpers";
 
 
-
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(4),
@@ -36,13 +33,13 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
     },
 
-        formControl: {
-            margin: theme.spacing(1),
-            minWidth: 120,
-        },
-        selectEmpty: {
-            marginTop: theme.spacing(2),
-        },
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
+    },
+    selectEmpty: {
+        marginTop: theme.spacing(2),
+    },
 
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -74,7 +71,7 @@ function Register() {
 
     const [pinCode, setPinCode] = useState('45787878');
     const [role, setRole] = useState("USER");
-    const [phoneNumber,setPhoneNumber] = useState("45454545");
+    const [phoneNumber, setPhoneNumber] = useState("45454545");
     const [gender, setGender] = useState("MALE");
     const [isAgreed, setIsAgreed] = useState(false);
 
@@ -93,18 +90,17 @@ function Register() {
     // const [gender, setGender] = useState("MALE");
 
 
-
-    function getRoles (input){
+    function getRoles(input) {
 
         const isUser = (input === "USER")
         const isDoctor = (input === "DOCTOR")
         const isTester = (input === "TESTER")
 
 
-        return {isUser,isDoctor,isTester}
+        return {isUser, isDoctor, isTester}
     }
 
-    function callObservable(subscriberMethod,callback) {
+    function callObservable(subscriberMethod, callback) {
 
         subscriberMethod
             .subscribe((response) => {
@@ -118,10 +114,11 @@ function Register() {
             }))
 
     }
+
     function registerUser(payload) {
 
 
-        callObservable(doRegisterUser(payload),(response)=>{
+        callObservable(doRegisterUser(payload), (response) => {
 
             const currentUser = response.user
             const token = response.token
@@ -133,42 +130,40 @@ function Register() {
         })
 
     }
+
     function registerDoctor(payload) {
 
-        callObservable(doRegisterDoctor(payload),(response)=>{
+        callObservable(doRegisterDoctor(payload), (response) => {
             appNotification.showSuccess("Succesfully Registered,Please upload Document to continue")
 
-            history.push("/upload-document/" + role +"/" + response.id)
+            history.push("/upload-document/" + role + "/" + response.id)
 
         })
 
 
-
     }
+
     function registerTester(payload) {
 
-        callObservable(doRegisterTester(payload),(response)=>{
-
+        callObservable(doRegisterTester(payload), (response) => {
 
 
             appNotification.showSuccess("Succesfully Registered,Please upload Document to continue")
 
-            history.push("/upload-document/" + role +"/" + response.id)
+            history.push("/upload-document/" + role + "/" + response.id)
 
         })
 
     }
 
-    function onUserTypeChanged(evt,role){
-        if(evt.target.checked)
+    function onUserTypeChanged(evt, role) {
+        if (evt.target.checked)
             setRole(role)
 
     }
+
     function handleSubmit(event) {
         event.preventDefault();
-
-
-
 
 
         const payload = {
@@ -177,7 +172,7 @@ function Register() {
             email,
             password,
             confirmPassword,
-            dateOfBirth:getAsFormatted(new Date(dateOfBirth)),
+            dateOfBirth: getAsFormatted(new Date(dateOfBirth)),
             address,
             pinCode,
             userName,
@@ -186,25 +181,24 @@ function Register() {
         }
 
 
-
-        if(!isAgreed ){
+        if (!isAgreed) {
 
             appNotification.showError("Please agree the terms and conditions")
             return;
         }
-        if(confirmPassword !== password){
+        if (confirmPassword !== password) {
 
             appNotification.showError("Passwords Mismatch")
             return;
         }
-        let  {isUser,isDoctor,isTester} = getRoles(role)
+        let {isUser, isDoctor, isTester} = getRoles(role)
 
 
-        if(isUser)
+        if (isUser)
             registerUser(payload);
-        else if(isDoctor)
+        else if (isDoctor)
             registerDoctor(payload);
-        else if(isTester)
+        else if (isTester)
             registerTester(payload);
 
 
@@ -218,7 +212,7 @@ function Register() {
 
                     <Typography component="h1" variant="h5">
                         Register to take Laboratory Tests.
-                        <hr />
+                        <hr/>
                     </Typography>
 
 
@@ -234,12 +228,15 @@ function Register() {
                                         name="userRole"
                                         id="userroleDetail"
                                         value={role}
-                                        >
+                                    >
 
 
-                                        <FormControlLabel value="USER" control={<Radio  onChange={e => onUserTypeChanged(e,"USER")}  />} label="Patient" />
-                                        <FormControlLabel value="TESTER" control={<Radio onChange={e => onUserTypeChanged(e,"TESTER")} />} label="Tester" />
-                                        <FormControlLabel value="DOCTOR" control={<Radio onChange={e => onUserTypeChanged(e,"DOCTOR")} />} label="Doctor" />
+                                        <FormControlLabel value="USER" control={<Radio
+                                            onChange={e => onUserTypeChanged(e, "USER")}/>} label="Patient"/>
+                                        <FormControlLabel value="TESTER" control={<Radio
+                                            onChange={e => onUserTypeChanged(e, "TESTER")}/>} label="Tester"/>
+                                        <FormControlLabel value="DOCTOR" control={<Radio
+                                            onChange={e => onUserTypeChanged(e, "DOCTOR")}/>} label="Doctor"/>
                                     </RadioGroup>
                                 </FormControl>
                             </Grid>
@@ -294,7 +291,6 @@ function Register() {
                                     </Select>
                                 </FormControl>
                             </Grid>
-
 
 
                             <Grid item xs={12}>
@@ -412,7 +408,7 @@ function Register() {
                                     id="agreecondition"
                                     control={<Checkbox checked={isAgreed} onChange={e => {
                                         setIsAgreed(e.target.checked)
-                                    }} value="allowExtraEmails" color="primary" />}
+                                    }} value="allowExtraEmails" color="primary"/>}
                                     label="I agree to abide by all government regulation."
                                 />
                             </Grid>
@@ -425,12 +421,12 @@ function Register() {
                             className={classes.submit}
                         >
                             Register
-          </Button>
+                        </Button>
                         <Grid container justify="flex-end">
                             <Grid item>
                                 <Link to="/login" variant="body2">
                                     Already have an account? Sign in
-              </Link>
+                                </Link>
                             </Grid>
                         </Grid>
                     </form>

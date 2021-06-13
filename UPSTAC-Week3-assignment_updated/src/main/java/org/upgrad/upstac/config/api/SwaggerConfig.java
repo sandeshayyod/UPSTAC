@@ -1,6 +1,7 @@
 package org.upgrad.upstac.config.api;
 
 import com.google.common.base.Predicate;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.upgrad.upstac.users.roles.UserRole;
@@ -86,8 +87,8 @@ public class SwaggerConfig {
 
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("Upgrad UPSTAC System")
-                .description("UPSTAC Track APIs")
+        return new ApiInfoBuilder().title("Upstac Apis")
+                .description("UPSTAC APIs for Authorities,Doctors,testers and patients")
                 .contact("Upgrad")
                 .license("Apache 2.0")
                 .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")

@@ -1,7 +1,6 @@
 import {mount} from "enzyme";
 import React from "react";
 import Forbidden from "../../component/Forbidden";
-import Container from "@material-ui/core/Container";
 import {LoadingView} from "../../component/LoadingView";
 
 
@@ -16,7 +15,6 @@ describe('Components render tests', () => {
         expect(wrapper.find("h1")).toHaveLength(1);
 
 
-
     });
     it('should render Loading view ', () => {
 
@@ -25,7 +23,6 @@ describe('Components render tests', () => {
 
 
         expect(wrapper.find("div")).toHaveLength(1);
-
 
 
     });

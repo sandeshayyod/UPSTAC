@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.upgrad.upstac.auth.register.RegisterRequest;
 import org.upgrad.upstac.exception.AppException;
+import org.upgrad.upstac.testrequests.authority.models.UpdateApprovalRequest;
 import org.upgrad.upstac.users.models.AccountStatus;
 import org.upgrad.upstac.users.models.UpdateUserDetailRequest;
 import org.upgrad.upstac.users.roles.Role;
@@ -41,29 +42,40 @@ public class UserService {
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
+
     @Cacheable("user")
     public User findByUserName(String userName) {
+
         return userRepository.findByUserName(userName);
+
     }
 
     public List<User> findPendingApprovals() {
+
         return userRepository.findByStatus(AccountStatus.INITIATED);
+
     }
 
     public boolean isApprovedUser(String userName) {
+
         return userRepository.findByUserName(userName).getStatus() == AccountStatus.APPROVED;
+
     }
 
     public void validateUserWithSameDataExists(RegisterRequest user) {
+
         if ((null != findByUserName(user.getUserName())))
             throw new AppException("Username already exists " + user.getUserName());
+
         userRepository.findByEmail(user.getEmail()).ifPresent(user1 -> {
             throw new AppException("User with Same email already exists " + user.getEmail());
         });
         userRepository.findByPhoneNumber(user.getPhoneNumber()).ifPresent(user1 -> {
             throw new AppException("User with Same Phone number already exists " + user.getPhoneNumber());
         });
+
     }
+
 
     public List<User> findAll() {
         List<User> list = new ArrayList<>();
@@ -71,28 +83,38 @@ public class UserService {
         return list;
     }
 
+
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }
 
+
     public User addUser(RegisterRequest user) {
+
+
         return addUserWithRole(user, roleService.getForUser(), AccountStatus.APPROVED);
     }
 
     public User addDoctor(RegisterRequest user) {
+
         return addUserWithRole(user, roleService.getForDoctor(), AccountStatus.INITIATED);
     }
 
     public User addGovernmentAuthority(RegisterRequest user) {
+
         return addUserWithRole(user, roleService.getForGovernmentAuthority(), AccountStatus.APPROVED);
     }
 
     public User addTester(RegisterRequest user) {
+
         return addUserWithRole(user, roleService.getForTester(), AccountStatus.INITIATED);
     }
 
+
     public User addUserWithRole(@Valid RegisterRequest registerRequest, Role role, AccountStatus status) {
+
         validateUserWithSameDataExists(registerRequest);
+
 
         User newUser = new User();
         newUser.setUserName(registerRequest.getUserName());
@@ -110,24 +132,36 @@ public class UserService {
         newUser.setAddress(registerRequest.getAddress());
         newUser.setDateOfBirth(getDateFromString(registerRequest.getDateOfBirth()));
         newUser.setStatus(status);
-        User updatedUser = saveInDatabase(newUser);
+        User updatedUser = saveUser(newUser);
+
 
         return updatedUser;
+
+
     }
 
     @CachePut(value = "user")
-    public User updateApprovalStatus(Long userId, AccountStatus status) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new AppException("Invalid User ID"));
+    public User updateApprovalStatus(@Valid UpdateApprovalRequest updateApprovalRequest) {
+        User user = userRepository.findById(updateApprovalRequest.getUserId()).orElseThrow(() -> new AppException("Invalid User ID"));
+
+        @NotNull final AccountStatus status = updateApprovalRequest.getStatus();
         return updateStatusAndSave(user, status);
+
     }
 
     public User updateStatusAndSave(User user, @NotNull AccountStatus status) {
         user.setStatus(status);
-        return saveInDatabase(user);
+        return saveUser(user);
     }
 
-    @CachePut(value = "user")
     public User saveInDatabase(User newUser) {
+
+        return saveUser(newUser);
+    }
+
+
+    @CachePut(value = "user")
+    public User saveUser(User newUser) {
         try {
             return userRepository.save(newUser);
         } catch (DataIntegrityViolationException e) {
@@ -136,9 +170,12 @@ public class UserService {
             throw new AppException("User with same data Already exists, Email/Phone should be unique");
 
         }
+
     }
 
     public User updateUserDetails(User user, UpdateUserDetailRequest updateUserDetailRequest) {
+
+        log.info("updateUserDetailRequest" + updateUserDetailRequest.toString());
 
         if (isNotEmptyOrNull(updateUserDetailRequest.getFirstName()))
             user.setFirstName(updateUserDetailRequest.getFirstName());
@@ -152,14 +189,12 @@ public class UserService {
         if (isNotEmptyOrNull(updateUserDetailRequest.getPhoneNumber()))
             user.setPhoneNumber(updateUserDetailRequest.getPhoneNumber());
 
-        User savedUser = saveInDatabase(user);
+
+        User savedUser = saveUser(user);
         log.info("updateUserDetails" + savedUser.toString());
         return savedUser;
-    }
 
 
-    public Set<Role> getRoleFor(UserRole userRole) {
-        return getRolesForUser(roleService.findByRole(userRole));
     }
 
     private Set<Role> getRolesForUser(Role role) {
@@ -168,8 +203,15 @@ public class UserService {
         return roles;
     }
 
+
     public String toEncrypted(String password) {
+
         return bCryptPasswordEncoder.encode(password);
+    }
+
+
+    public Set<Role> getRoleFor(UserRole userRole) {
+        return getRolesForUser(roleService.findByRole(userRole));
     }
 
     public User findByEmail(String email) {

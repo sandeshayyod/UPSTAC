@@ -14,7 +14,7 @@ function PendingApprovals() {
 
     const [data, setData] = useState([]);
 
-    const {pendingUsers,pendingUsersLoaded,pendingUserGridData} = useSelector(state => state.authority);
+    const {pendingUsers, pendingUsersLoaded, pendingUserGridData} = useSelector(state => state.authority);
 
     const dispatch = useDispatch()
 
@@ -66,7 +66,7 @@ function PendingApprovals() {
                 empty: true,
                 customBodyRenderLite: (dataIndex) => {
 
-                    return <ViewAttachmentButton dataIndex={dataIndex} />
+                    return <ViewAttachmentButton dataIndex={dataIndex}/>
                 },
             }
         },
@@ -77,7 +77,7 @@ function PendingApprovals() {
                 sort: false,
                 empty: true,
                 customBodyRenderLite: (dataIndex) => {
-                    return <PendingApprovalActions dataIndex={dataIndex} />
+                    return <PendingApprovalActions dataIndex={dataIndex}/>
                 },
             }
         },
@@ -91,18 +91,17 @@ function PendingApprovals() {
     };
 
 
-
-useEffect(()=>{
-
-
-    if(pendingUsersLoaded== false)
-        reloadPendingApprovals(dispatch);
-    else{
-        setData(pendingUserGridData)
-    }
+    useEffect(() => {
 
 
-},[pendingUserGridData])
+        if (pendingUsersLoaded == false)
+            reloadPendingApprovals(dispatch);
+        else {
+            setData(pendingUserGridData)
+        }
+
+
+    }, [pendingUserGridData])
 
 
     return (

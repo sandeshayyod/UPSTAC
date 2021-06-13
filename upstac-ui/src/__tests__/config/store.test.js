@@ -8,7 +8,6 @@ import {act} from 'react-dom/test-utils';
 let container;
 
 
-
 describe('Store   tests', () => {
 
 
@@ -25,9 +24,9 @@ describe('Store   tests', () => {
     it('can render Provider', () => {
 
         act(() => {
-            ReactDOM.render(  <Provider store={store}>
+            ReactDOM.render(<Provider store={store}>
 
-                <CssBaseline  />
+                <CssBaseline/>
 
 
             </Provider>, container);
@@ -37,7 +36,6 @@ describe('Store   tests', () => {
         expect(container.textContent).not.toBeNull();
 
     });
-
 
 
 });

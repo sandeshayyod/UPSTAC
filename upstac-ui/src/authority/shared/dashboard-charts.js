@@ -1,6 +1,4 @@
-
-
-export function getPincodePositiveNegativeDistributionChartDetails(pinCodes){
+export function getPincodePositiveNegativeDistributionChartDetails(pinCodes) {
 
 
     const pinCodelabels = pinCodes.map(item => item.pinCode);
@@ -22,11 +20,11 @@ export function getPincodePositiveNegativeDistributionChartDetails(pinCodes){
 
     };
 
-   return data;
+    return data;
 }
 
 
-export function getPincodeHomeQuarantineAdmissionDistributionChartDetails(pinCodes){
+export function getPincodeHomeQuarantineAdmissionDistributionChartDetails(pinCodes) {
 
 
     const pinCodelabels = pinCodes.map(item => item.pinCode);
@@ -49,23 +47,22 @@ export function getPincodeHomeQuarantineAdmissionDistributionChartDetails(pinCod
     };
 
 
-
     return data;
 }
-export function sumOf(pinCodes,property){
 
-  return   pinCodes.map(pinCode => pinCode[property]).reduce((total, num) =>{
+export function sumOf(pinCodes, property) {
+
+    return pinCodes.map(pinCode => pinCode[property]).reduce((total, num) => {
 
         return total + num;
     })
 }
 
-export function getAllPostiveNegativeChartDetails(pinCodes){
+export function getAllPostiveNegativeChartDetails(pinCodes) {
 
 
-
-    const positiveCount =sumOf(pinCodes,"positiveCount")
-    const negativeCount =  sumOf(pinCodes,"negativeCount")
+    const positiveCount = sumOf(pinCodes, "positiveCount")
+    const negativeCount = sumOf(pinCodes, "negativeCount")
 
 
     const data = {
@@ -90,7 +87,7 @@ export function getAllPostiveNegativeChartDetails(pinCodes){
 
 }
 
-export function getAllHomeQuarantineAdmitChartDetails(pinCodes){
+export function getAllHomeQuarantineAdmitChartDetails(pinCodes) {
     /*
     0: {positiveCount: 3, negativeCount: 23, homeQuarantineCount: 24, admittedCount: 1, testedCount: 26, …}
     1: {positiveCount: 9, negativeCount: 17, homeQuarantineCount: 25, admittedCount: 0, testedCount: 26, …}
@@ -101,9 +98,9 @@ export function getAllHomeQuarantineAdmitChartDetails(pinCodes){
      */
 
 
-    console.log("pinCodes",pinCodes)
-    const homeQuarantineCount =sumOf(pinCodes,"homeQuarantineCount")
-    const admittedCount =  sumOf(pinCodes,"admittedCount")
+    console.log("pinCodes", pinCodes)
+    const homeQuarantineCount = sumOf(pinCodes, "homeQuarantineCount")
+    const admittedCount = sumOf(pinCodes, "admittedCount")
 
 
     const data = {
@@ -113,7 +110,7 @@ export function getAllHomeQuarantineAdmitChartDetails(pinCodes){
             'Home Quarantine'
         ],
         datasets: [{
-            data: [admittedCount,homeQuarantineCount ],
+            data: [admittedCount, homeQuarantineCount],
             backgroundColor: [
                 '#ee2a3e',
                 '#005100',

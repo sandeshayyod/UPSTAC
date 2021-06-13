@@ -12,7 +12,7 @@ function LabHistory() {
 
     const [requests, setRequests] = useState([]);
 
-    async function onUpdateLabHistory(index){
+    async function onUpdateLabHistory(index) {
         const currentRequest = requests[index]
         console.log(currentRequest)
         history.push("/update-lab-report/" + currentRequest.requestId)
@@ -21,7 +21,7 @@ function LabHistory() {
     }
 
 
-    const actionColumns =[{
+    const actionColumns = [{
         name: 'Actions',
         options: {
             filter: false,
@@ -30,8 +30,8 @@ function LabHistory() {
             customBodyRenderLite: (dataIndex) => {
 
                 const currentRequest = requests[dataIndex]
-                if(currentRequest && currentRequest.status && currentRequest.status == "LAB_TEST_IN_PROGRESS"){
-                    return   <div>
+                if (currentRequest && currentRequest.status && currentRequest.status == "LAB_TEST_IN_PROGRESS") {
+                    return <div>
 
                         <Button onClick={() => {
                             onUpdateLabHistory(dataIndex)
@@ -40,12 +40,10 @@ function LabHistory() {
                         </Button>
 
 
-
                     </div>
-                }else{
+                } else {
                     return <Fragment></Fragment>
                 }
-
 
 
             },
@@ -53,9 +51,9 @@ function LabHistory() {
     }]
 
     return (
-      <RequestHistory actionColumns={actionColumns} getMyHistory={doGetMyLabHistory} onDataLoaded ={(results) => {
-          setRequests(results)
-      }}></RequestHistory>
+        <RequestHistory actionColumns={actionColumns} getMyHistory={doGetMyLabHistory} onDataLoaded={(results) => {
+            setRequests(results)
+        }}></RequestHistory>
 
     )
 }

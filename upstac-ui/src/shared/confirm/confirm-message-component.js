@@ -18,20 +18,17 @@ function PaperComponent(props) {
 }
 
 
-
-
-
 class ConfirmMessageComponent extends Component {
 
 
     constructor(props) {
         super(props);
-        this.classes=null
+        this.classes = null
         this.state = {
             "show": false,
             "message": '',
-            "acceptCallback":null,
-            "rejectCallback":null,
+            "acceptCallback": null,
+            "rejectCallback": null,
         };
     }
 
@@ -45,13 +42,12 @@ class ConfirmMessageComponent extends Component {
     onConfirmationReceived(res) {
 
 
-
-            this.setState({
-                "show": true,
-                "acceptCallback":res.accept,
-                "rejectCallback":res.reject,
-                "message": res.message
-            });
+        this.setState({
+            "show": true,
+            "acceptCallback": res.accept,
+            "rejectCallback": res.reject,
+            "message": res.message
+        });
 
 
     }
@@ -64,15 +60,15 @@ class ConfirmMessageComponent extends Component {
 
         this.setState({
             "show": false,
-            "acceptCallback":null,
-            "rejectCallback":null,
+            "acceptCallback": null,
+            "rejectCallback": null,
             "message": ''
         });
     }
 
 
     handleCancel() {
-      //  const {show, acceptCallback, message, rejectCallback} = this.state
+        //  const {show, acceptCallback, message, rejectCallback} = this.state
 
         //
         // if(rejectCallback)
@@ -83,10 +79,10 @@ class ConfirmMessageComponent extends Component {
     }
 
     handleSuccess() {
-        const { acceptCallback} = this.state
+        const {acceptCallback} = this.state
 
 
-        if(acceptCallback)
+        if (acceptCallback)
             acceptCallback()
 
 
@@ -103,17 +99,17 @@ class ConfirmMessageComponent extends Component {
 
                 <div className="confirm-message-inner-container">
                     <div>
-                      <Dialog
-                          id="dlgconfirm"
-                          className="confirm-dialog-box"
+                        <Dialog
+                            id="dlgconfirm"
+                            className="confirm-dialog-box"
                             open={show}
                             onClose={() => {
-                                    this.handleCancel()
-                                }}
+                                this.handleCancel()
+                            }}
                             PaperComponent={PaperComponent}
                             aria-labelledby="draggable-dialog-title"
                         >
-                            <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
+                            <DialogTitle style={{cursor: 'move'}} id="draggable-dialog-title">
                                 Confirm
                             </DialogTitle>
                             <DialogContent>
@@ -135,9 +131,6 @@ class ConfirmMessageComponent extends Component {
                             </DialogActions>
                         </Dialog>
                     </div>
-
-
-
 
 
                 </div>

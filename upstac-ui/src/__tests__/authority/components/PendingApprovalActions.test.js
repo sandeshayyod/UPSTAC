@@ -7,7 +7,8 @@ import {initMockAxios, resetMockAxios} from "../../../../__testshared/shared/fra
 import {mountComponentWithStoreAndHistory} from "../../../../__testshared/shared/component-helper";
 import {getStoreForGovernmentAuthorityWithPendingUsersAndThresholds} from "../../../../__testshared/shared/store/mock-store-service";
 import {
-    setupErrorMocksForPendingApprovals, setupErrorMocksForUpdateApproval, setupMocksForRejectApproval,
+    setupErrorMocksForUpdateApproval,
+    setupMocksForRejectApproval,
     setupMocksForUpdateApproval
 } from "../../../../__testshared/shared/api/mock-authority";
 import {mockNotificationAndConfirmationModules} from "../../../../__testshared/shared/frameworks/mock-notification";
@@ -56,7 +57,6 @@ describe('Pending Approval  Actions tests', () => {
         })
 
 
-
     });
 
     it('should show error message , if the approval api returns error', async () => {
@@ -83,11 +83,9 @@ describe('Pending Approval  Actions tests', () => {
         })
 
 
-
     });
 
     it('should show success message , if the approval gets rejected', async () => {
-
 
 
         const dataIndex = 1;
@@ -109,7 +107,6 @@ describe('Pending Approval  Actions tests', () => {
             expect(confirmMessageModule.confirmMessageService.show).toBeCalled()
 
         })
-
 
 
     });

@@ -1,4 +1,3 @@
-
 import {
     Button,
     Container,
@@ -6,7 +5,6 @@ import {
     Grid,
     makeStyles,
     React,
-    TextField,
     Typography,
     useEffect,
     useHistory,
@@ -14,8 +12,7 @@ import {
 } from "../component"
 import {doCompleteConsultation} from "./consultationDispatcher";
 import {appNotification} from "../shared/notification/app-notification";
-import {useLocation, useRouteMatch} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {useRouteMatch} from "react-router-dom";
 import {doGetTestRequestByID} from "../testrequests/testRequestDispatcher";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
@@ -32,15 +29,15 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        backgroundColor:'white',
+        backgroundColor: 'white',
     },
-    mt40:{
-        marginTop:40,
+    mt40: {
+        marginTop: 40,
     },
-    w100:{
+    w100: {
         width: '100%',
     },
-    select100Form:{
+    select100Form: {
         width: '100%',
     },
     formControl: {
@@ -51,8 +48,8 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(2),
     },
 
-    formContainer:{
-        padding:"50 50 50 50"
+    formContainer: {
+        padding: "50 50 50 50"
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -71,22 +68,15 @@ function UpdateConsultation() {
 
     let {params} = useRouteMatch("/update-consultation/:id");
 
-    const {id} =params
+    const {id} = params
 
     const [testRequest, setTestRequest] = useState(null);
     const [labResult, setLabResult] = useState(null);
-    const [  suggestion , setSuggestion] = useState('NO_ISSUES');
+    const [suggestion, setSuggestion] = useState('NO_ISSUES');
     const [comments, setComments] = useState('');
 
 
-
-
-
-
-
     function handleSubmit(event) {
-
-
 
 
         event.preventDefault();
@@ -96,16 +86,15 @@ function UpdateConsultation() {
 
         }
 
-        console.log("payload",payload)
-        doCompleteConsultation(id,payload)
+        console.log("payload", payload)
+        doCompleteConsultation(id, payload)
             .subscribe((response) => {
                 appNotification.showSuccess("Succesfully Updated Consultation")
-               history.push("/consultation-history")
+                history.push("/consultation-history")
 
             }, errorHandler)
 
     }
-
 
 
     useEffect(() => {
@@ -117,17 +106,10 @@ function UpdateConsultation() {
                 setLabResult(result.labResult)
 
 
-            },errorHandler)
-
-
-
+            }, errorHandler)
 
 
     }, [])
-
-
-
-
 
 
     return (
@@ -135,29 +117,28 @@ function UpdateConsultation() {
             <Container component="main" className={classes.mt40}>
 
 
-                <Grid container spacing={2}  className={classes.paperWhite} >
+                <Grid container spacing={2} className={classes.paperWhite}>
 
                     <Typography component="h1" variant="h5">
                         Provide Prescription
-                        <hr />
+                        <hr/>
                     </Typography>
-                    <Grid container spacing={2}  className={classes.formContainer} >
+                    <Grid container spacing={2} className={classes.formContainer}>
 
-                        <Grid item xs={6} >
+                        <Grid item xs={6}>
                             <TestRequestDetail testRequest={testRequest}></TestRequestDetail>
 
                             <br/>
                             <LabResultDetail labResult={labResult}></LabResultDetail>
 
                         </Grid>
-                        <Grid item xs={6} >
+                        <Grid item xs={6}>
                             <form className={classes.form} onSubmit={handleSubmit} noValidate>
 
                                 <Grid container spacing={2}>
 
 
-
-                                    <Grid item xs={12} >
+                                    <Grid item xs={12}>
 
 
                                         <FormControl variant="outlined" className={classes.select100Form}>
@@ -180,10 +161,7 @@ function UpdateConsultation() {
                                         </FormControl>
 
 
-
-
                                     </Grid>
-
 
 
                                     <Grid item xs={12}>
@@ -198,10 +176,9 @@ function UpdateConsultation() {
 
                                             id="comments"
                                             onInput={e => setComments(e.target.value)}
-                                            placeholder="Comments" />
+                                            placeholder="Comments"/>
 
                                     </Grid>
-
 
 
                                 </Grid>

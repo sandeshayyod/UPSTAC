@@ -20,6 +20,9 @@ public class RoleService {
         roleRepository.save(role);
     }
 
+    public Role getForUser() {
+        return findByRole(UserRole.USER);
+    }
 
     public List<Role> findAll() {
         return roleRepository.findAll();
@@ -32,10 +35,6 @@ public class RoleService {
 
     public boolean shouldInitialize() {
         return roleRepository.findAll().size() <= 0;
-    }
-
-    public Role getForUser() {
-        return findByRole(UserRole.USER);
     }
 
     public Role getForDoctor() {

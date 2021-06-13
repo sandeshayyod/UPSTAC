@@ -1,11 +1,10 @@
-
 let baseUrl;
 const apiVersion = 'v1';
 
 const hostname = window && window.location && window.location.hostname;
 
-const cloudHosts = ['ec2-52-73-149-55.compute-1.amazonaws.com',"52.73.149.55"]
-if(cloudHosts.includes(hostname)) {
+const cloudHosts = ['ec2-52-73-149-55.compute-1.amazonaws.com', "52.73.149.55"]
+if (cloudHosts.includes(hostname)) {
     baseUrl = 'http://ec2-52-73-149-55.compute-1.amazonaws.com:8080';
 
 } else {
@@ -13,8 +12,6 @@ if(cloudHosts.includes(hostname)) {
 }
 
 
-
-
-export const environment={
+export const environment = {
     baseUrl
 }

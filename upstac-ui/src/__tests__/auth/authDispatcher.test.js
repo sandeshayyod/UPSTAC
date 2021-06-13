@@ -1,13 +1,16 @@
 //import MockAdapter from 'axios-mock-adapter';
 import React from "react";
-import {initMockAxios, mockAny, mockPost, mockServerError, resetMockAxios} from "../../../__testshared/shared/frameworks/mock-http";
+import {
+    initMockAxios,
+    mockPost,
+    mockServerError,
+    resetMockAxios
+} from "../../../__testshared/shared/frameworks/mock-http";
 import {environment} from "../../environment";
 import {getMockedLoginResponse} from "../../../__testshared/shared/data/auth-responses";
 import {doLogin, doLogout, doUploadDocument, getToken} from "../../auth/authDispatcher";
-import {getMockedUserDetailsResponseForNormalUser} from "../../../__testshared/shared/data/auth-responses";
 import {setupMocksForUploadDocument, setupMocksForValidUserLogin} from "../../../__testshared/shared/api/mock-auth";
 import {LOGOUT} from "../../auth/authStore";
-
 
 
 describe('Get Token Tests', () => {
@@ -20,32 +23,32 @@ describe('Get Token Tests', () => {
     });
     const authUrl = environment.baseUrl + '/auth/login';
 
-    it('should return token details if correct response is passed', (done ) => {
+    it('should return token details if correct response is passed', (done) => {
 
-        mockPost(authUrl,getMockedLoginResponse())
-        const loginRequest ={user:"someUser",password:"somePassword"}
-            getToken(loginRequest).subscribe(res=>{
+        mockPost(authUrl, getMockedLoginResponse())
+        const loginRequest = {user: "someUser", password: "somePassword"}
+        getToken(loginRequest).subscribe(res => {
 
-                expect(res).not.toBeNull()
-                done()
-            })
+            expect(res).not.toBeNull()
+            done()
+        })
 
 
     });
 
-    it('should throw exception for incorrect response ', (done ) => {
+    it('should throw exception for incorrect response ', (done) => {
 
         mockServerError(authUrl)
-        const loginRequest ={user:"invalidUser",password:"invalidPassword"}
-            getToken(loginRequest).subscribe(res=>{
+        const loginRequest = {user: "invalidUser", password: "invalidPassword"}
+        getToken(loginRequest).subscribe(res => {
 
-                expect(res).toBeNull()
-                done()
-            },(error => {
+            expect(res).toBeNull()
+            done()
+        }, (error => {
 
-                expect(error).not.toBeNull()
-                done()
-            }))
+            expect(error).not.toBeNull()
+            done()
+        }))
 
 
     });
@@ -63,10 +66,10 @@ describe('Upload & Logout Tests', () => {
 
     it('should call http upload', (done) => {
 
-        const id=23;
-        const files =["SOME-DUMMY_DATA"]
+        const id = 23;
+        const files = ["SOME-DUMMY_DATA"]
         setupMocksForUploadDocument(id);
-        doUploadDocument(id,files).subscribe(res=>{
+        doUploadDocument(id, files).subscribe(res => {
 
             done()
         })
@@ -78,9 +81,9 @@ describe('Upload & Logout Tests', () => {
 
         const mockDispatch = jest.fn();
 
-        const mockHistory=[]
+        const mockHistory = []
 
-        doLogout(mockDispatch,mockHistory)
+        doLogout(mockDispatch, mockHistory)
 
         expect(mockHistory.length).toBe(1)
         expect(mockDispatch).toBeCalledWith({type: LOGOUT})
@@ -99,16 +102,16 @@ describe('Login Tests', () => {
     });
 
 
-    it('should login succesful and retrieve User Details if correct response is passed', (done ) => {
+    it('should login succesful and retrieve User Details if correct response is passed', (done) => {
         setupMocksForValidUserLogin();
-        const loginRequest ={user:"someUser",password:"somePassword"}
-        doLogin(loginRequest).subscribe(res=>{
+        const loginRequest = {user: "someUser", password: "somePassword"}
+        doLogin(loginRequest).subscribe(res => {
 
-                expect(res).not.toBeNull()
-                expect(res.token).not.toBeNull()
-                expect(res.user).not.toBeNull()
-                done()
-            })
+            expect(res).not.toBeNull()
+            expect(res.token).not.toBeNull()
+            expect(res.user).not.toBeNull()
+            done()
+        })
 
 
     });

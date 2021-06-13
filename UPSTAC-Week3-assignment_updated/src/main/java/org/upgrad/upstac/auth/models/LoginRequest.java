@@ -7,7 +7,7 @@ public class LoginRequest {
     @ApiModelProperty(example = "user")
     private String userName;
 
-
+    @ApiModelProperty(example = "password")
     private String password;
 
     public LoginRequest() {

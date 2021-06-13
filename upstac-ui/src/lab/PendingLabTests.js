@@ -1,4 +1,4 @@
-import {Container, Grid, makeStyles, React, useEffect, useHistory, useState,} from "../component"
+import {Container, Grid, React, useEffect, useHistory, useState,} from "../component"
 import MUIDataTable from "mui-datatables";
 import {appNotification} from "../shared/notification/app-notification";
 import {doAssignLabResult, doGetPendingTestRequests} from "./labDispatcher";
@@ -9,8 +9,6 @@ import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import {useDispatch} from "react-redux";
 import {useGlobalStyles} from "../styles/GlobalStyles";
 import {errorHandler} from "../shared/common-helpers";
-
-
 
 
 function PendingLabTests() {
@@ -57,11 +55,11 @@ function PendingLabTests() {
                 empty: true,
                 customBodyRenderLite: (dataIndex) => {
 
-                    return    <Button
+                    return <Button
                         variant="contained"
                         color="secondary"
                         className={classes.button}
-                        startIcon={<AssignmentIndIcon />}
+                        startIcon={<AssignmentIndIcon/>}
                         onClick={() => {
                             onAssignToMeClicked(dataIndex)
                         }}
@@ -76,47 +74,42 @@ function PendingLabTests() {
     ];
 
 
-
-
     const options = {
         filter: true,
         filterType: 'dropdown',
         responsive: 'standard',
-        selectableRows:'none',
+        selectableRows: 'none',
 
     };
 
 
-    async function onAssignToMeClicked(index){
+    async function onAssignToMeClicked(index) {
         const pendingRequest = requests[index]
 
 
-            await confirmMessageService.show("Do you want to Assign yourself for testing " + pendingRequest.name + "?")
+        await confirmMessageService.show("Do you want to Assign yourself for testing " + pendingRequest.name + "?")
 
-            doAssignLabResult(pendingRequest.requestId).subscribe((res)=>{
-                appNotification.showSuccess("Request Assigned to you, Please Goto "+ pendingRequest.address+" and  update the details.")
+        doAssignLabResult(pendingRequest.requestId).subscribe((res) => {
+            appNotification.showSuccess("Request Assigned to you, Please Goto " + pendingRequest.address + " and  update the details.")
 
-                history.push("/update-lab-report/" + pendingRequest.requestId)
+            history.push("/update-lab-report/" + pendingRequest.requestId)
 
-            }, errorHandler);
-
-
+        }, errorHandler);
 
 
     }
-
 
 
     function reloadTests() {
 
         doGetPendingTestRequests()
             .subscribe((pendingTests) => {
-                console.log("pendingTests",pendingTests)
+                console.log("pendingTests", pendingTests)
 
                 setRequests(pendingTests)
-                const buffer = pendingTests.map(item=>{
+                const buffer = pendingTests.map(item => {
 
-                    return [item.requestId,item.name,item.age,item.status]
+                    return [item.requestId, item.name, item.age, item.status]
                 })
 
                 const results = []
@@ -133,26 +126,22 @@ function PendingLabTests() {
         reloadTests();
 
 
-
-
-
     }, [])
-
 
 
     return (
         <React.Fragment>
             <Container maxWidth="md" component="main" className={classes.heroContent}>
                 <h1>
-                   Pending Tests
+                    Pending Tests
                 </h1>
-                <hr />
+                <hr/>
             </Container>
             <Container component="main" maxWidth="md">
                 <Grid container>
                     <Grid item md={12}>
 
-                        <MUIDataTable title={"Pending Tests"} data={data} columns={columns} options={options} />
+                        <MUIDataTable title={"Pending Tests"} data={data} columns={columns} options={options}/>
 
                     </Grid>
                 </Grid>

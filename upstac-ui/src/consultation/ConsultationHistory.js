@@ -12,7 +12,7 @@ function ConsultationHistory() {
 
     const [requests, setRequests] = useState([]);
 
-    async function onUpdateConsultationHistory(index){
+    async function onUpdateConsultationHistory(index) {
         const currentRequest = requests[index]
         history.push("/update-consultation/" + currentRequest.requestId)
 
@@ -20,7 +20,7 @@ function ConsultationHistory() {
     }
 
 
-    const actionColumns =[{
+    const actionColumns = [{
         name: 'Actions',
         options: {
             filter: false,
@@ -29,22 +29,20 @@ function ConsultationHistory() {
             customBodyRenderLite: (dataIndex) => {
 
                 const currentRequest = requests[dataIndex]
-                if(currentRequest && currentRequest.status && currentRequest.status == "DIAGNOSIS_IN_PROCESS"){
-                    return   <div>
+                if (currentRequest && currentRequest.status && currentRequest.status == "DIAGNOSIS_IN_PROCESS") {
+                    return <div>
 
-                        <Button  onClick={() => {
+                        <Button onClick={() => {
                             onUpdateConsultationHistory(dataIndex)
                         }} color="secondary" variant="outlined" className={classes.link}>
                             Update
                         </Button>
 
 
-
                     </div>
-                }else{
+                } else {
                     return <Fragment></Fragment>
                 }
-
 
 
             },
@@ -53,9 +51,10 @@ function ConsultationHistory() {
 
 
     return (
-        <RequestHistory actionColumns={actionColumns} getMyHistory={doGetMyConsultationHistory} onDataLoaded ={(results) => {
-            setRequests(results)
-        }}></RequestHistory>
+        <RequestHistory actionColumns={actionColumns} getMyHistory={doGetMyConsultationHistory}
+                        onDataLoaded={(results) => {
+                            setRequests(results)
+                        }}></RequestHistory>
 
     )
 }

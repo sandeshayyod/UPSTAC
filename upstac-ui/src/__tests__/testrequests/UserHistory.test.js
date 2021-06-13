@@ -1,11 +1,6 @@
 import {initMockAxios, resetMockAxios} from "../../../__testshared/shared/frameworks/mock-http";
-import {setupMocksForGetMyLabHistory} from "../../../__testshared/lab/mock-lab";
 import {mountComponentWithStoreAndHistory} from "../../../__testshared/shared/component-helper";
-import LabHistory from "../../lab/LabHistory";
-import {
-    getStoreForLoggedInTester,
-    getStoreForLoggedInUser
-} from "../../../__testshared/shared/store/mock-store-service";
+import {getStoreForLoggedInUser} from "../../../__testshared/shared/store/mock-store-service";
 import React from "react";
 import {setupMocksForDoGetMyTestRequests} from "../../../__testshared/shared/api/mock-testrequests";
 import UserHistory from "../../testrequests/UserHistory";
@@ -27,7 +22,7 @@ describe('User History tests', () => {
 
         setupMocksForDoGetMyTestRequests();
 
-        const httpSpy=  jest.spyOn(http, 'get')
+        const httpSpy = jest.spyOn(http, 'get')
 
 
         const mountedComponent = mountComponentWithStoreAndHistory(<UserHistory/>,
@@ -37,21 +32,16 @@ describe('User History tests', () => {
         await mountedComponent.waitForDomLoad();
 
 
+        const container = mountedComponent.getContainer()
 
-        const container= mountedComponent.getContainer()
 
-
-        mountedComponent.verifyOnComplete(()=>{
+        mountedComponent.verifyOnComplete(() => {
             expect(httpSpy).toBeCalled()
 
         })
 
 
-
-
     });
-
-
 
 
 });

@@ -7,22 +7,21 @@ const token = null;
 
 function setToken(token) {
 
-    if (token){
-        console.log("setting token" , token)
+    if (token) {
+        console.log("setting token", token)
         axios.defaults.headers.common['Authorization'] = "Bearer " + token;
-    }
-    else
+    } else
         axios.defaults.headers.common['Authorization'] = null
 }
 
 
 axios.interceptors.request.use(req => {
-     console.log(`${req.method} ${req.url}`);
+    console.log(`${req.method} ${req.url}`);
 
     return req;
 });
 
-function uploadFileToServer(url,data) {
+function uploadFileToServer(url, data) {
 
     return makeAsObservable({
         method: 'post',
@@ -56,7 +55,7 @@ function uploadFileToServer(url,data) {
 
 }
 
-function downloadFileFromServer(url,filename) {
+function downloadFileFromServer(url, filename) {
 
     loadingIndicator.show();
     axios({
@@ -65,7 +64,7 @@ function downloadFileFromServer(url,filename) {
         responseType: 'blob', // important
     }).then((response) => {
         loadingIndicator.hide();
-        console.log( response.headers)
+        console.log(response.headers)
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
@@ -86,18 +85,18 @@ function makeAsObservable(request) {
 
     return new Observable((observer) => {
         loadingIndicator.show();
-        console.log("going  for",request.url)
+        console.log("going  for", request.url)
         axios(request)
             .then((response) => {
                 loadingIndicator.hide();
-                console.log("received for",request.url)
+                console.log("received for", request.url)
                 observer.next(response.data);
                 observer.complete();
             })
             .catch((error) => {
-                console.log("error for",request.url)
+                console.log("error for", request.url)
                 loadingIndicator.hide();
-                if(error && error.response && error.response.data && error.response.data.message)
+                if (error && error.response && error.response.data && error.response.data.message)
                     observer.error(error.response.data.message);
                 else
                     observer.error("Technical error , please try again");
@@ -146,7 +145,7 @@ function deleteRequest(url) {
 
 }
 
-export default {setToken, delete: deleteRequest, put, get, post,uploadFileToServer,downloadFileFromServer};
+export default {setToken, delete: deleteRequest, put, get, post, uploadFileToServer, downloadFileFromServer};
 // export default function cube() {
 //     return {setToken, delete: deleteRequest, put, get, post};
 // };

@@ -3,7 +3,7 @@ import http from "../shared/services/http-service.js";
 
 export const TestRequestsUrl = environment.baseUrl + '/api/testrequests';
 export const doGetTestRequestFlowBaseUrl = TestRequestsUrl + '/flow/';
-export const doGetTestRequestByIDBaseUrl = TestRequestsUrl+ "/";
+export const doGetTestRequestByIDBaseUrl = TestRequestsUrl + "/";
 
 export const doGetMyTestRequests = () => {
 
@@ -12,7 +12,6 @@ export const doGetMyTestRequests = () => {
 }
 
 export const doGetTestRequestByID = (id) => {
-
 
 
     return http.get(doGetTestRequestByIDBaseUrl + id);
@@ -32,8 +31,6 @@ export const doCreateTestRequest = (testRequest) => {
     // }
 
 
-
-
     return http.post(TestRequestsUrl, testRequest);
 
 
@@ -42,6 +39,6 @@ export const doCreateTestRequest = (testRequest) => {
 export const doGetTestRequestFlow = (id) => {
 
 
-    return http.get(doGetTestRequestFlowBaseUrl  + id);
+    return http.get(doGetTestRequestFlowBaseUrl + id);
 }
 

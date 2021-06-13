@@ -6,7 +6,7 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from '@material-ui/icons/Close';
 import Snackbar from "@material-ui/core/Snackbar";
 
-const TEN_SECONDS =  10  * 1000
+const TEN_SECONDS = 10 * 1000
 
 
 class AppNotificationComponent extends Component {
@@ -34,13 +34,13 @@ class AppNotificationComponent extends Component {
 
         console.log("showing")
 
-            this.setState({
-                "show": true,
-                "title": res.title,
-                "variant": res.variant,
-                "message": res.message
-            });
-            this.resetAfterTenSeconds()
+        this.setState({
+            "show": true,
+            "title": res.title,
+            "variant": res.variant,
+            "message": res.message
+        });
+        this.resetAfterTenSeconds()
 
     }
 
@@ -68,7 +68,7 @@ class AppNotificationComponent extends Component {
 
         const {show, title, message, variant} = this.state
 
-        if(!show)
+        if (!show)
             return <Fragment></Fragment>
 
         return <Fragment>
@@ -77,7 +77,7 @@ class AppNotificationComponent extends Component {
             }}>
                 <Alert onClose={() => {
                     this.reset()
-                }} severity={variant}  action={
+                }} severity={variant} action={
                     <IconButton
                         aria-label="close"
                         color="inherit"
@@ -86,7 +86,7 @@ class AppNotificationComponent extends Component {
                             this.reset()
                         }}
                     >
-                        <CloseIcon fontSize="inherit" />
+                        <CloseIcon fontSize="inherit"/>
                     </IconButton>
                 }
                 >

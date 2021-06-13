@@ -38,17 +38,17 @@ describe('Login shallow tests', () => {
         const store = mountedComponent.getStore();
         const actions = store.getActions()
 
-       console.log("actions",actions)
+        console.log("actions", actions)
         expect(actions.length).toBe(1);
-        const action =actions[0]
-        expect(action.type).toBe( LOGIN)
+        const action = actions[0]
+        expect(action.type).toBe(LOGIN)
         expect(action.payload.token).not.toBeNull();
 
     });
 
     it('Clicking login with Invalid credentials should throw error', async () => {
 
-        const showErrorSpy=  jest.spyOn(appNotification, 'showError')
+        const showErrorSpy = jest.spyOn(appNotification, 'showError')
 
         const mountedComponent = mountComponentWithStoreAndHistory(<Login/>, getStoreForAnonymousUser())
 
@@ -62,7 +62,7 @@ describe('Login shallow tests', () => {
         await mountedComponent.reload();
 
 
-        mountedComponent.verifyOnComplete(()=>{
+        mountedComponent.verifyOnComplete(() => {
             expect(showErrorSpy).toHaveBeenCalled();
 
         })

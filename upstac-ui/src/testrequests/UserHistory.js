@@ -1,7 +1,6 @@
-import {Button, makeStyles, React, useState,} from "../component"
+import {React, useState,} from "../component"
 import {doGetMyTestRequests} from "./testRequestDispatcher";
 import RequestHistory from "./RequestHistory";
-import {Fragment} from "react";
 
 
 function UserHistory() {
@@ -9,23 +8,24 @@ function UserHistory() {
 
     const [requests, setRequests] = useState([]);
 
-    function getResult(dataIndex){
+    function getResult(dataIndex) {
         const currentRequest = requests[dataIndex]
-        if(currentRequest && currentRequest.labResult && currentRequest.labResult.result){
+        if (currentRequest && currentRequest.labResult && currentRequest.labResult.result) {
             return currentRequest.labResult.result
 
-        }else {
+        } else {
             return ""
         }
 
 
     }
-    function getSuggestion(dataIndex){
+
+    function getSuggestion(dataIndex) {
         const currentRequest = requests[dataIndex]
-        if(currentRequest && currentRequest.consultation && currentRequest.consultation.suggestion){
+        if (currentRequest && currentRequest.consultation && currentRequest.consultation.suggestion) {
             return currentRequest.consultation.suggestion
 
-        }else {
+        } else {
             return ""
         }
 
@@ -33,8 +33,7 @@ function UserHistory() {
     }
 
 
-
-    const actionColumns =[{
+    const actionColumns = [{
         name: 'Result',
         options: {
             filter: false,
@@ -44,17 +43,14 @@ function UserHistory() {
 
 
                 const result = getResult(dataIndex)
-                    return <div className={result}>
-                        {result}
-                        </div>
-
-
-
+                return <div className={result}>
+                    {result}
+                </div>
 
 
             },
         }
-    },{
+    }, {
         name: 'Doctor Suggestion',
         options: {
             filter: false,
@@ -69,16 +65,15 @@ function UserHistory() {
                 </div>
 
 
-
             },
         }
     },]
 
 
     return (
-        <RequestHistory onDataLoaded ={(results) => {
+        <RequestHistory onDataLoaded={(results) => {
             setRequests(results)
-        }} actionColumns={actionColumns} getMyHistory={doGetMyTestRequests} ></RequestHistory>
+        }} actionColumns={actionColumns} getMyHistory={doGetMyTestRequests}></RequestHistory>
 
     )
 
